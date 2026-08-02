@@ -1,6 +1,6 @@
 ﻿namespace MessengerDraft_1
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,72 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            rtbMessages = new RichTextBox();
-            lblText = new Label();
-            tbxMessage = new TextBox();
-            btnSend = new Button();
-            flowLayoutPanel1 = new FlowLayoutPanel();
+            fopContact = new FlowLayoutPanel();
             menuStrip1 = new MenuStrip();
             moreToolStripMenuItem = new ToolStripMenuItem();
             aboutUsToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            signUpInToolStripMenuItem = new ToolStripMenuItem();
+            addUserToolStripMenuItem = new ToolStripMenuItem();
             tbxSearch = new TextBox();
             lblSearch = new Label();
             btnSearch = new Button();
+            panelMessage = new Panel();
+            panel2 = new Panel();
+            rtbMessage = new RichTextBox();
+            btnSend = new Button();
+            lblText = new Label();
+            floMsg = new FlowLayoutPanel();
+            panel1 = new Panel();
+            label1 = new Label();
+            pictureBox1 = new PictureBox();
             menuStrip1.SuspendLayout();
+            panelMessage.SuspendLayout();
+            panel2.SuspendLayout();
+            panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
-            // rtbMessages
+            // fopContact
             // 
-            rtbMessages.BackColor = Color.FromArgb(255, 255, 227);
-            rtbMessages.Location = new Point(396, 62);
-            rtbMessages.Name = "rtbMessages";
-            rtbMessages.ReadOnly = true;
-            rtbMessages.Size = new Size(428, 367);
-            rtbMessages.TabIndex = 0;
-            rtbMessages.Text = "";
-            // 
-            // lblText
-            // 
-            lblText.AutoSize = true;
-            lblText.BackColor = Color.FromArgb(128, 255, 255);
-            lblText.Location = new Point(396, 444);
-            lblText.Name = "lblText";
-            lblText.Size = new Size(28, 15);
-            lblText.TabIndex = 2;
-            lblText.Text = "Text";
-            // 
-            // tbxMessage
-            // 
-            tbxMessage.Location = new Point(441, 441);
-            tbxMessage.Name = "tbxMessage";
-            tbxMessage.Size = new Size(307, 23);
-            tbxMessage.TabIndex = 3;
-            // 
-            // btnSend
-            // 
-            btnSend.Image = Properties.Resources.sendIcon;
-            btnSend.Location = new Point(766, 435);
-            btnSend.Name = "btnSend";
-            btnSend.Size = new Size(75, 32);
-            btnSend.TabIndex = 4;
-            btnSend.UseVisualStyleBackColor = true;
-            btnSend.Click += btnSend_Click;
-            // 
-            // flowLayoutPanel1
-            // 
-            flowLayoutPanel1.AutoScroll = true;
-            flowLayoutPanel1.BackgroundImage = Properties.Resources.chatList;
-            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel1.Location = new Point(21, 68);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(276, 414);
-            flowLayoutPanel1.TabIndex = 5;
-            flowLayoutPanel1.Paint += flowLayoutPanel1_Paint;
+            fopContact.AutoScroll = true;
+            fopContact.BackgroundImage = Properties.Resources.chatList;
+            fopContact.FlowDirection = FlowDirection.TopDown;
+            fopContact.Location = new Point(21, 68);
+            fopContact.Name = "fopContact";
+            fopContact.Size = new Size(276, 414);
+            fopContact.TabIndex = 5;
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { moreToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { moreToolStripMenuItem, addUserToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(890, 24);
@@ -102,7 +75,7 @@
             // 
             // moreToolStripMenuItem
             // 
-            moreToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutUsToolStripMenuItem, exitToolStripMenuItem });
+            moreToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutUsToolStripMenuItem, exitToolStripMenuItem, signUpInToolStripMenuItem });
             moreToolStripMenuItem.Name = "moreToolStripMenuItem";
             moreToolStripMenuItem.Size = new Size(47, 20);
             moreToolStripMenuItem.Text = "More";
@@ -110,14 +83,28 @@
             // aboutUsToolStripMenuItem
             // 
             aboutUsToolStripMenuItem.Name = "aboutUsToolStripMenuItem";
-            aboutUsToolStripMenuItem.Size = new Size(122, 22);
+            aboutUsToolStripMenuItem.Size = new Size(127, 22);
             aboutUsToolStripMenuItem.Text = "About us";
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(122, 22);
+            exitToolStripMenuItem.Size = new Size(127, 22);
             exitToolStripMenuItem.Text = "Exit";
+            // 
+            // signUpInToolStripMenuItem
+            // 
+            signUpInToolStripMenuItem.Name = "signUpInToolStripMenuItem";
+            signUpInToolStripMenuItem.Size = new Size(127, 22);
+            signUpInToolStripMenuItem.Text = "SignUp/In";
+            signUpInToolStripMenuItem.Click += signUpInToolStripMenuItem_Click;
+            // 
+            // addUserToolStripMenuItem
+            // 
+            addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
+            addUserToolStripMenuItem.Size = new Size(67, 20);
+            addUserToolStripMenuItem.Text = "Add User";
+            addUserToolStripMenuItem.Click += addUserToolStripMenuItem_Click;
             // 
             // tbxSearch
             // 
@@ -144,37 +131,123 @@
             btnSearch.TabIndex = 9;
             btnSearch.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // panelMessage
+            // 
+            panelMessage.Controls.Add(panel2);
+            panelMessage.Location = new Point(316, 39);
+            panelMessage.Name = "panelMessage";
+            panelMessage.Size = new Size(458, 443);
+            panelMessage.TabIndex = 10;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(rtbMessage);
+            panel2.Controls.Add(btnSend);
+            panel2.Controls.Add(lblText);
+            panel2.Location = new Point(0, 398);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(462, 45);
+            panel2.TabIndex = 12;
+            // 
+            // rtbMessage
+            // 
+            rtbMessage.Location = new Point(48, 7);
+            rtbMessage.Name = "rtbMessage";
+            rtbMessage.Size = new Size(307, 26);
+            rtbMessage.TabIndex = 8;
+            rtbMessage.Text = "";
+            // 
+            // btnSend
+            // 
+            btnSend.Image = Properties.Resources.sendIcon;
+            btnSend.Location = new Point(371, 7);
+            btnSend.Name = "btnSend";
+            btnSend.Size = new Size(75, 32);
+            btnSend.TabIndex = 7;
+            btnSend.UseVisualStyleBackColor = true;
+            btnSend.Click += btnSend_Click;
+            // 
+            // lblText
+            // 
+            lblText.AutoSize = true;
+            lblText.BackColor = Color.FromArgb(128, 255, 255);
+            lblText.Location = new Point(14, 10);
+            lblText.Name = "lblText";
+            lblText.Size = new Size(28, 15);
+            lblText.TabIndex = 5;
+            lblText.Text = "Text";
+            // 
+            // floMsg
+            // 
+            floMsg.AutoScroll = true;
+            floMsg.BackgroundImage = Properties.Resources.chatBack;
+            floMsg.FlowDirection = FlowDirection.TopDown;
+            floMsg.Location = new Point(316, 39);
+            floMsg.Name = "floMsg";
+            floMsg.Size = new Size(458, 399);
+            floMsg.TabIndex = 0;
+            floMsg.WrapContents = false;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.White;
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(pictureBox1);
+            panel1.Location = new Point(794, 39);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(84, 86);
+            panel1.TabIndex = 11;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(22, 65);
+            label1.Name = "label1";
+            label1.Size = new Size(38, 15);
+            label1.TabIndex = 1;
+            label1.Text = "label1";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(5, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(55, 50);
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            // 
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(192, 255, 255);
             BackgroundImage = Properties.Resources.back;
             ClientSize = new Size(890, 494);
+            Controls.Add(floMsg);
+            Controls.Add(panel1);
+            Controls.Add(panelMessage);
             Controls.Add(btnSearch);
             Controls.Add(lblSearch);
             Controls.Add(tbxSearch);
-            Controls.Add(flowLayoutPanel1);
-            Controls.Add(btnSend);
-            Controls.Add(tbxMessage);
-            Controls.Add(lblText);
-            Controls.Add(rtbMessages);
+            Controls.Add(fopContact);
             Controls.Add(menuStrip1);
-            Name = "Form1";
+            Name = "MainForm";
             Text = "Main";
+            FormClosing += MainForm_FormClosing;
+            Load += MainForm_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            panelMessage.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private RichTextBox rtbMessages;
-        private Label lblText;
-        private TextBox tbxMessage;
-        private Button btnSend;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel fopContact;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem moreToolStripMenuItem;
         private ToolStripMenuItem aboutUsToolStripMenuItem;
@@ -182,5 +255,16 @@
         private TextBox tbxSearch;
         private Label lblSearch;
         private Button btnSearch;
+        private Panel panelMessage;
+        private FlowLayoutPanel floMsg;
+        private ToolStripMenuItem signUpInToolStripMenuItem;
+        private ToolStripMenuItem addUserToolStripMenuItem;
+        private Panel panel1;
+        private Panel panel2;
+        private Button btnSend;
+        private Label lblText;
+        private PictureBox pictureBox1;
+        private Label label1;
+        private RichTextBox rtbMessage;
     }
 }
