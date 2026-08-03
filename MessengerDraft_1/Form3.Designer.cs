@@ -36,6 +36,7 @@
             lblPassSU = new Label();
             lblName = new Label();
             lblUserIdSU = new Label();
+            btnbackSignUp = new Button();
             signUpPanel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -57,12 +58,13 @@
             // btSignUp
             // 
             btSignUp.Font = new Font("Segoe UI", 12F);
-            btSignUp.Location = new Point(170, 203);
+            btSignUp.Location = new Point(150, 199);
             btSignUp.Name = "btSignUp";
             btSignUp.Size = new Size(133, 46);
             btSignUp.TabIndex = 11;
             btSignUp.Text = "Sign up";
             btSignUp.UseVisualStyleBackColor = true;
+            btSignUp.Click += btSignUp_Click;
             // 
             // tbxPasswordSU
             // 
@@ -116,12 +118,23 @@
             lblUserIdSU.TabIndex = 5;
             lblUserIdSU.Text = "User Id:";
             // 
+            // btnbackSignUp
+            // 
+            btnbackSignUp.BackgroundImage = Properties.Resources.backArrow;
+            btnbackSignUp.Location = new Point(12, 3);
+            btnbackSignUp.Name = "btnbackSignUp";
+            btnbackSignUp.Size = new Size(48, 27);
+            btnbackSignUp.TabIndex = 13;
+            btnbackSignUp.UseVisualStyleBackColor = true;
+            btnbackSignUp.Click += btnbackSignUp_Click;
+            // 
             // signUpForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.signUpBack;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnbackSignUp);
             Controls.Add(signUpPanel2);
             Name = "signUpForm";
             Text = "Sign up";
@@ -141,5 +154,6 @@
         private Label lblPassSU;
         private Label lblName;
         private Label lblUserIdSU;
+        private Button btnbackSignUp;
     }
 }

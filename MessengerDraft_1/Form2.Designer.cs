@@ -35,6 +35,7 @@
             tbxName = new TextBox();
             lblPass = new Label();
             lblName = new Label();
+            btnbackSignIn = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -95,7 +96,7 @@
             // 
             lblPass.AutoSize = true;
             lblPass.Font = new Font("Segoe UI", 12F);
-            lblPass.Location = new Point(13, 142);
+            lblPass.Location = new Point(25, 142);
             lblPass.Margin = new Padding(4, 0, 4, 0);
             lblPass.Name = "lblPass";
             lblPass.Size = new Size(79, 21);
@@ -106,12 +107,22 @@
             // 
             lblName.AutoSize = true;
             lblName.Font = new Font("Segoe UI", 12F);
-            lblName.Location = new Point(35, 74);
+            lblName.Location = new Point(42, 79);
             lblName.Margin = new Padding(4, 0, 4, 0);
             lblName.Name = "lblName";
             lblName.Size = new Size(62, 21);
             lblName.TabIndex = 5;
             lblName.Text = "User Id:";
+            // 
+            // btnbackSignIn
+            // 
+            btnbackSignIn.BackgroundImage = Properties.Resources.backArrow;
+            btnbackSignIn.Location = new Point(12, 12);
+            btnbackSignIn.Name = "btnbackSignIn";
+            btnbackSignIn.Size = new Size(48, 27);
+            btnbackSignIn.TabIndex = 13;
+            btnbackSignIn.UseVisualStyleBackColor = true;
+            btnbackSignIn.Click += btnbackSignIn_Click;
             // 
             // logForm
             // 
@@ -119,6 +130,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.signinpanel;
             ClientSize = new Size(1029, 630);
+            Controls.Add(btnbackSignIn);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 12F);
             Margin = new Padding(4);
@@ -139,5 +151,6 @@
         private TextBox tbxName;
         private Label lblPass;
         private Label lblName;
+        private Button btnbackSignIn;
     }
 }

@@ -15,7 +15,10 @@ namespace MessengerDraft_1
         public logForm()
         {
             InitializeComponent();
+            lblName.BackColor = Color.Transparent;
+            lblPass.BackColor = Color.Transparent;
         }
+
 
         private void linkLabelSI_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -29,6 +32,15 @@ namespace MessengerDraft_1
         private void logForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void btnbackSignIn_Click(object sender, EventArgs e)
+        {
+            MainForm mainForm = new MainForm();
+            mainForm.Show();
+
+            this.Hide();
+
         }
     }
 }

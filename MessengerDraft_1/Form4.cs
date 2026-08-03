@@ -31,5 +31,14 @@ namespace MessengerDraft_1
         {
             Application.Exit();
         }
+
+        private void btnbackAddUser_Click(object sender, EventArgs e)
+        {
+            MainForm mainForm = new MainForm();
+
+            mainForm.Show();
+
+            this.Hide();
+        }
     }
 }

@@ -21,5 +21,19 @@ namespace MessengerDraft_1
         {
             Application.Exit();
         }
+
+        private void btSignUp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnbackSignUp_Click(object sender, EventArgs e)
+        {
+            logForm lgForm= new logForm();
+
+            lgForm.Show();
+
+            this.Hide();
+        }
     }
 }

@@ -33,6 +33,7 @@
             button1 = new Button();
             lblSearch = new Label();
             tbxSearch = new TextBox();
+            btnbackAddUser = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -82,12 +83,23 @@
             tbxSearch.TabIndex = 4;
             tbxSearch.TextChanged += tbxSearch_TextChanged;
             // 
+            // btnbackAddUser
+            // 
+            btnbackAddUser.BackgroundImage = Properties.Resources.backArrow;
+            btnbackAddUser.Location = new Point(12, 12);
+            btnbackAddUser.Name = "btnbackAddUser";
+            btnbackAddUser.Size = new Size(48, 27);
+            btnbackAddUser.TabIndex = 13;
+            btnbackAddUser.UseVisualStyleBackColor = true;
+            btnbackAddUser.Click += btnbackAddUser_Click;
+            // 
             // addUserForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.addPanel;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnbackAddUser);
             Controls.Add(panel1);
             Controls.Add(flowLayoutPanel1);
             Name = "addUserForm";
@@ -105,5 +117,6 @@
         private Button button1;
         private Label lblSearch;
         private TextBox tbxSearch;
+        private Button btnbackAddUser;
     }
 }

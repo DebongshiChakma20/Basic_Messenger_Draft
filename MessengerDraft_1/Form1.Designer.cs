@@ -47,6 +47,7 @@
             panel1 = new Panel();
             label1 = new Label();
             pictureBox1 = new PictureBox();
+            btnbackMain = new Button();
             menuStrip1.SuspendLayout();
             panelMessage.SuspendLayout();
             panel2.SuspendLayout();
@@ -59,10 +60,11 @@
             fopContact.AutoScroll = true;
             fopContact.BackgroundImage = Properties.Resources.chatList;
             fopContact.FlowDirection = FlowDirection.TopDown;
-            fopContact.Location = new Point(21, 68);
+            fopContact.Location = new Point(66, 60);
             fopContact.Name = "fopContact";
             fopContact.Size = new Size(276, 414);
             fopContact.TabIndex = 5;
+            fopContact.Paint += fopContact_Paint;
             // 
             // menuStrip1
             // 
@@ -83,19 +85,19 @@
             // aboutUsToolStripMenuItem
             // 
             aboutUsToolStripMenuItem.Name = "aboutUsToolStripMenuItem";
-            aboutUsToolStripMenuItem.Size = new Size(127, 22);
+            aboutUsToolStripMenuItem.Size = new Size(180, 22);
             aboutUsToolStripMenuItem.Text = "About us";
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(127, 22);
+            exitToolStripMenuItem.Size = new Size(180, 22);
             exitToolStripMenuItem.Text = "Exit";
             // 
             // signUpInToolStripMenuItem
             // 
             signUpInToolStripMenuItem.Name = "signUpInToolStripMenuItem";
-            signUpInToolStripMenuItem.Size = new Size(127, 22);
+            signUpInToolStripMenuItem.Size = new Size(180, 22);
             signUpInToolStripMenuItem.Text = "SignUp/In";
             signUpInToolStripMenuItem.Click += signUpInToolStripMenuItem_Click;
             // 
@@ -108,7 +110,7 @@
             // 
             // tbxSearch
             // 
-            tbxSearch.Location = new Point(79, 39);
+            tbxSearch.Location = new Point(124, 30);
             tbxSearch.Name = "tbxSearch";
             tbxSearch.Size = new Size(154, 23);
             tbxSearch.TabIndex = 7;
@@ -116,7 +118,7 @@
             // lblSearch
             // 
             lblSearch.AutoSize = true;
-            lblSearch.Location = new Point(28, 42);
+            lblSearch.Location = new Point(66, 34);
             lblSearch.Name = "lblSearch";
             lblSearch.Size = new Size(45, 15);
             lblSearch.TabIndex = 8;
@@ -125,7 +127,7 @@
             // btnSearch
             // 
             btnSearch.Image = Properties.Resources.search4;
-            btnSearch.Location = new Point(239, 39);
+            btnSearch.Location = new Point(284, 28);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(58, 26);
             btnSearch.TabIndex = 9;
@@ -133,8 +135,9 @@
             // 
             // panelMessage
             // 
+            panelMessage.Controls.Add(floMsg);
             panelMessage.Controls.Add(panel2);
-            panelMessage.Location = new Point(316, 39);
+            panelMessage.Location = new Point(375, 30);
             panelMessage.Name = "panelMessage";
             panelMessage.Size = new Size(458, 443);
             panelMessage.TabIndex = 10;
@@ -182,7 +185,7 @@
             floMsg.AutoScroll = true;
             floMsg.BackgroundImage = Properties.Resources.chatBack;
             floMsg.FlowDirection = FlowDirection.TopDown;
-            floMsg.Location = new Point(316, 39);
+            floMsg.Location = new Point(1, 0);
             floMsg.Name = "floMsg";
             floMsg.Size = new Size(458, 399);
             floMsg.TabIndex = 0;
@@ -193,15 +196,15 @@
             panel1.BackColor = Color.White;
             panel1.Controls.Add(label1);
             panel1.Controls.Add(pictureBox1);
-            panel1.Location = new Point(794, 39);
+            panel1.Location = new Point(839, 27);
             panel1.Name = "panel1";
-            panel1.Size = new Size(84, 86);
+            panel1.Size = new Size(51, 71);
             panel1.TabIndex = 11;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(22, 65);
+            label1.Location = new Point(7, 43);
             label1.Name = "label1";
             label1.Size = new Size(38, 15);
             label1.TabIndex = 1;
@@ -209,11 +212,20 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(5, 12);
+            pictureBox1.Location = new Point(3, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(55, 50);
+            pictureBox1.Size = new Size(45, 37);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
+            // 
+            // btnbackMain
+            // 
+            btnbackMain.BackgroundImage = Properties.Resources.backArrow;
+            btnbackMain.Location = new Point(0, 27);
+            btnbackMain.Name = "btnbackMain";
+            btnbackMain.Size = new Size(48, 27);
+            btnbackMain.TabIndex = 12;
+            btnbackMain.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -222,7 +234,7 @@
             BackColor = Color.FromArgb(192, 255, 255);
             BackgroundImage = Properties.Resources.back;
             ClientSize = new Size(890, 494);
-            Controls.Add(floMsg);
+            Controls.Add(btnbackMain);
             Controls.Add(panel1);
             Controls.Add(panelMessage);
             Controls.Add(btnSearch);
@@ -266,5 +278,6 @@
         private PictureBox pictureBox1;
         private Label label1;
         private RichTextBox rtbMessage;
+        private Button btnbackMain;
     }
 }
