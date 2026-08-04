@@ -42,5 +42,23 @@ namespace MessengerDraft_1
             this.Hide();
 
         }
+
+        private void btnSignIn_Click(object sender, EventArgs e)
+        {
+            string userId = tbxUserId.Text;
+            string password = tbxPass.Text;
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Please enter both User ID and Password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else {
+                
+                MainForm mainForm = new MainForm(userId);
+                mainForm.Show();
+                this.Hide();
+            }
+        }
     }
 }

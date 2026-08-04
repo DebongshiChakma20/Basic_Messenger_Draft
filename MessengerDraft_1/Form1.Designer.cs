@@ -39,20 +39,20 @@
             lblSearch = new Label();
             btnSearch = new Button();
             panelMessage = new Panel();
+            floMsg = new FlowLayoutPanel();
             panel2 = new Panel();
             rtbMessage = new RichTextBox();
             btnSend = new Button();
             lblText = new Label();
-            floMsg = new FlowLayoutPanel();
             panel1 = new Panel();
-            label1 = new Label();
-            pictureBox1 = new PictureBox();
+            lblUsersId = new Label();
+            pbProfile = new PictureBox();
             btnbackMain = new Button();
             menuStrip1.SuspendLayout();
             panelMessage.SuspendLayout();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbProfile).BeginInit();
             SuspendLayout();
             // 
             // fopContact
@@ -60,18 +60,21 @@
             fopContact.AutoScroll = true;
             fopContact.BackgroundImage = Properties.Resources.chatList;
             fopContact.FlowDirection = FlowDirection.TopDown;
-            fopContact.Location = new Point(66, 60);
+            fopContact.Location = new Point(14, 77);
+            fopContact.Margin = new Padding(3, 4, 3, 4);
             fopContact.Name = "fopContact";
-            fopContact.Size = new Size(276, 414);
+            fopContact.Size = new Size(363, 552);
             fopContact.TabIndex = 5;
             fopContact.Paint += fopContact_Paint;
             // 
             // menuStrip1
             // 
+            menuStrip1.ImageScalingSize = new Size(20, 20);
             menuStrip1.Items.AddRange(new ToolStripItem[] { moreToolStripMenuItem, addUserToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(890, 24);
+            menuStrip1.Padding = new Padding(7, 3, 0, 3);
+            menuStrip1.Size = new Size(1017, 30);
             menuStrip1.TabIndex = 6;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -79,57 +82,59 @@
             // 
             moreToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutUsToolStripMenuItem, exitToolStripMenuItem, signUpInToolStripMenuItem });
             moreToolStripMenuItem.Name = "moreToolStripMenuItem";
-            moreToolStripMenuItem.Size = new Size(47, 20);
+            moreToolStripMenuItem.Size = new Size(58, 24);
             moreToolStripMenuItem.Text = "More";
             // 
             // aboutUsToolStripMenuItem
             // 
             aboutUsToolStripMenuItem.Name = "aboutUsToolStripMenuItem";
-            aboutUsToolStripMenuItem.Size = new Size(180, 22);
+            aboutUsToolStripMenuItem.Size = new Size(158, 26);
             aboutUsToolStripMenuItem.Text = "About us";
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(158, 26);
             exitToolStripMenuItem.Text = "Exit";
             // 
             // signUpInToolStripMenuItem
             // 
             signUpInToolStripMenuItem.Name = "signUpInToolStripMenuItem";
-            signUpInToolStripMenuItem.Size = new Size(180, 22);
+            signUpInToolStripMenuItem.Size = new Size(158, 26);
             signUpInToolStripMenuItem.Text = "SignUp/In";
             signUpInToolStripMenuItem.Click += signUpInToolStripMenuItem_Click;
             // 
             // addUserToolStripMenuItem
             // 
             addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
-            addUserToolStripMenuItem.Size = new Size(67, 20);
+            addUserToolStripMenuItem.Size = new Size(84, 24);
             addUserToolStripMenuItem.Text = "Add User";
             addUserToolStripMenuItem.Click += addUserToolStripMenuItem_Click;
             // 
             // tbxSearch
             // 
-            tbxSearch.Location = new Point(124, 30);
+            tbxSearch.Location = new Point(142, 40);
+            tbxSearch.Margin = new Padding(3, 4, 3, 4);
             tbxSearch.Name = "tbxSearch";
-            tbxSearch.Size = new Size(154, 23);
+            tbxSearch.Size = new Size(175, 27);
             tbxSearch.TabIndex = 7;
             // 
             // lblSearch
             // 
             lblSearch.AutoSize = true;
-            lblSearch.Location = new Point(66, 34);
+            lblSearch.Location = new Point(75, 45);
             lblSearch.Name = "lblSearch";
-            lblSearch.Size = new Size(45, 15);
+            lblSearch.Size = new Size(56, 20);
             lblSearch.TabIndex = 8;
             lblSearch.Text = "Search:";
             // 
             // btnSearch
             // 
             btnSearch.Image = Properties.Resources.search4;
-            btnSearch.Location = new Point(284, 28);
+            btnSearch.Location = new Point(325, 37);
+            btnSearch.Margin = new Padding(3, 4, 3, 4);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(58, 26);
+            btnSearch.Size = new Size(66, 35);
             btnSearch.TabIndex = 9;
             btnSearch.UseVisualStyleBackColor = true;
             // 
@@ -137,35 +142,51 @@
             // 
             panelMessage.Controls.Add(floMsg);
             panelMessage.Controls.Add(panel2);
-            panelMessage.Location = new Point(375, 30);
+            panelMessage.Location = new Point(397, 44);
+            panelMessage.Margin = new Padding(3, 4, 3, 4);
             panelMessage.Name = "panelMessage";
-            panelMessage.Size = new Size(458, 443);
+            panelMessage.Size = new Size(512, 585);
             panelMessage.TabIndex = 10;
+            // 
+            // floMsg
+            // 
+            floMsg.AutoScroll = true;
+            floMsg.BackgroundImage = Properties.Resources.chatBack;
+            floMsg.FlowDirection = FlowDirection.TopDown;
+            floMsg.Location = new Point(0, 0);
+            floMsg.Margin = new Padding(3, 4, 3, 4);
+            floMsg.Name = "floMsg";
+            floMsg.Size = new Size(512, 532);
+            floMsg.TabIndex = 0;
+            floMsg.WrapContents = false;
             // 
             // panel2
             // 
             panel2.Controls.Add(rtbMessage);
             panel2.Controls.Add(btnSend);
             panel2.Controls.Add(lblText);
-            panel2.Location = new Point(0, 398);
+            panel2.Location = new Point(0, 531);
+            panel2.Margin = new Padding(3, 4, 3, 4);
             panel2.Name = "panel2";
-            panel2.Size = new Size(462, 45);
+            panel2.Size = new Size(510, 60);
             panel2.TabIndex = 12;
             // 
             // rtbMessage
             // 
-            rtbMessage.Location = new Point(48, 7);
+            rtbMessage.Location = new Point(55, 9);
+            rtbMessage.Margin = new Padding(3, 4, 3, 4);
             rtbMessage.Name = "rtbMessage";
-            rtbMessage.Size = new Size(307, 26);
+            rtbMessage.Size = new Size(350, 33);
             rtbMessage.TabIndex = 8;
             rtbMessage.Text = "";
             // 
             // btnSend
             // 
             btnSend.Image = Properties.Resources.sendIcon;
-            btnSend.Location = new Point(371, 7);
+            btnSend.Location = new Point(424, 9);
+            btnSend.Margin = new Padding(3, 4, 3, 4);
             btnSend.Name = "btnSend";
-            btnSend.Size = new Size(75, 32);
+            btnSend.Size = new Size(86, 43);
             btnSend.TabIndex = 7;
             btnSend.UseVisualStyleBackColor = true;
             btnSend.Click += btnSend_Click;
@@ -174,66 +195,60 @@
             // 
             lblText.AutoSize = true;
             lblText.BackColor = Color.FromArgb(128, 255, 255);
-            lblText.Location = new Point(14, 10);
+            lblText.Location = new Point(16, 13);
             lblText.Name = "lblText";
-            lblText.Size = new Size(28, 15);
+            lblText.Size = new Size(36, 20);
             lblText.TabIndex = 5;
             lblText.Text = "Text";
-            // 
-            // floMsg
-            // 
-            floMsg.AutoScroll = true;
-            floMsg.BackgroundImage = Properties.Resources.chatBack;
-            floMsg.FlowDirection = FlowDirection.TopDown;
-            floMsg.Location = new Point(1, 0);
-            floMsg.Name = "floMsg";
-            floMsg.Size = new Size(458, 399);
-            floMsg.TabIndex = 0;
-            floMsg.WrapContents = false;
             // 
             // panel1
             // 
             panel1.BackColor = Color.White;
-            panel1.Controls.Add(label1);
-            panel1.Controls.Add(pictureBox1);
-            panel1.Location = new Point(839, 27);
+            panel1.Controls.Add(lblUsersId);
+            panel1.Controls.Add(pbProfile);
+            panel1.Location = new Point(915, 36);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(51, 71);
+            panel1.Size = new Size(102, 104);
             panel1.TabIndex = 11;
             // 
-            // label1
+            // lblUsersId
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(7, 43);
-            label1.Name = "label1";
-            label1.Size = new Size(38, 15);
-            label1.TabIndex = 1;
-            label1.Text = "label1";
+            lblUsersId.Location = new Point(3, 64);
+            lblUsersId.Name = "lblUsersId";
+            lblUsersId.Size = new Size(96, 37);
+            lblUsersId.TabIndex = 1;
+            lblUsersId.Text = "Id";
+            lblUsersId.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // pictureBox1
+            // pbProfile
             // 
-            pictureBox1.Location = new Point(3, 3);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(45, 37);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            pbProfile.BackgroundImage = Properties.Resources.profile2;
+            pbProfile.Location = new Point(27, 11);
+            pbProfile.Margin = new Padding(3, 4, 3, 4);
+            pbProfile.Name = "pbProfile";
+            pbProfile.Size = new Size(42, 38);
+            pbProfile.TabIndex = 0;
+            pbProfile.TabStop = false;
+            pbProfile.Click += pbProfile_Click;
             // 
             // btnbackMain
             // 
             btnbackMain.BackgroundImage = Properties.Resources.backArrow;
-            btnbackMain.Location = new Point(0, 27);
+            btnbackMain.Location = new Point(0, 36);
+            btnbackMain.Margin = new Padding(3, 4, 3, 4);
             btnbackMain.Name = "btnbackMain";
-            btnbackMain.Size = new Size(48, 27);
+            btnbackMain.Size = new Size(55, 31);
             btnbackMain.TabIndex = 12;
             btnbackMain.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(192, 255, 255);
             BackgroundImage = Properties.Resources.back;
-            ClientSize = new Size(890, 494);
+            ClientSize = new Size(1017, 659);
             Controls.Add(btnbackMain);
             Controls.Add(panel1);
             Controls.Add(panelMessage);
@@ -242,6 +257,7 @@
             Controls.Add(tbxSearch);
             Controls.Add(fopContact);
             Controls.Add(menuStrip1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
             Text = "Main";
             FormClosing += MainForm_FormClosing;
@@ -252,8 +268,7 @@
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbProfile).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -275,8 +290,8 @@
         private Panel panel2;
         private Button btnSend;
         private Label lblText;
-        private PictureBox pictureBox1;
-        private Label label1;
+        private PictureBox pbProfile;
+        private Label lblUsersId;
         private RichTextBox rtbMessage;
         private Button btnbackMain;
     }

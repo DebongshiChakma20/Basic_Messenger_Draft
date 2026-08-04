@@ -24,7 +24,23 @@ namespace MessengerDraft_1
 
         private void btSignUp_Click(object sender, EventArgs e)
         {
+            string userId = tbxUserIdSU.Text;
+            string name = tbxNameSU.Text;
+            string password = tbxPasswordSU.Text;
 
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("None of the fields can be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+
+                MainForm mainForm = new MainForm(userId);
+                MessageBox.Show("Sign Up successful! Welcome, " + name + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                mainForm.Show();
+                this.Hide();
+            }
         }
 
         private void btnbackSignUp_Click(object sender, EventArgs e)

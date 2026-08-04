@@ -2,11 +2,21 @@ namespace MessengerDraft_1
 {
     public partial class MainForm : Form
     {
-        List<Panel> contactList = new List<Panel>();
+        private Contact currentContact;
+
+        public MainForm(string userId)
+        {
+            InitializeComponent();
+            lblUsersId.Text = userId;
+        }
+
+        List<Panel> myContactListPanel = new List<Panel>();
+        List<Contact> myContacts = new List<Contact>();
         public MainForm()
         {
             InitializeComponent();
             btnbackMain.BackColor = Color.Transparent;
+            
         }
 
 
@@ -22,7 +32,8 @@ namespace MessengerDraft_1
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            addUserForm addForm = new addUserForm();
+            addUserForm addForm = new addUserForm(this);
+
 
             addForm.Show();
 
@@ -83,6 +94,85 @@ namespace MessengerDraft_1
         private void fopContact_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void pbProfile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog profilePic=new OpenFileDialog();
+
+            profilePic.Title = "Select a profile picture";
+            profilePic.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
+            if(profilePic.ShowDialog() == DialogResult.OK)
+            {
+                pbProfile.Image = Image.FromFile(profilePic.FileName);
+                pbProfile.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+        }
+
+        private void addContactToFlow(Contact contacts)
+        {
+            Panel singleContactPanel = new Panel();
+            singleContactPanel.Size = new Size(362, 50);
+            singleContactPanel.BackColor = Color.White;
+            singleContactPanel.BorderStyle = BorderStyle.FixedSingle;
+            singleContactPanel.Margin = new Padding(3);
+
+
+            Label lblIdOfContact = new Label();
+            lblIdOfContact.Text = contacts.id;
+            lblIdOfContact.Location = new Point(10, 15);
+            lblIdOfContact.AutoSize = true;
+            lblIdOfContact.Font = new Font("Segoe UI", 8, FontStyle.Regular);
+
+            Label lblNameOfContact = new Label();
+            lblNameOfContact.Text = contacts.name;
+            lblNameOfContact.Location = new Point(130, 15);
+            lblNameOfContact.AutoSize = true;
+            lblNameOfContact.Font = new Font("Segoe UI", 8, FontStyle.Regular);
+             
+            Label lblStatus = new Label();
+            lblStatus.Text = contacts.status;
+            lblStatus.Location = new Point(230, 15);
+            lblStatus.AutoSize = true;
+
+            singleContactPanel.Controls.Add(lblIdOfContact);
+            singleContactPanel.Controls.Add(lblNameOfContact);
+            singleContactPanel.Controls.Add(lblStatus);
+
+            singleContactPanel.Tag= contacts;
+
+            singleContactPanel.Click += contact_Click;
+            lblIdOfContact.Click += contact_Click;
+            lblNameOfContact.Click += contact_Click;
+            lblStatus.Click += contact_Click;
+
+            fopContact.Controls.Add(singleContactPanel);
+        }
+
+        public void AddContact(Contact contact) {
+            myContacts.Add(contact);
+
+            addContactToFlow(contact);
+        }
+
+        public void contact_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Clicked!");
+            Control clicked=(Control)sender;
+
+            Panel clicked_Panel;
+
+            if (clicked is Panel)
+            {
+                clicked_Panel = (Panel)clicked;
+            }
+            else{
+                clicked_Panel = (Panel)clicked.Parent;
+            }
+            Contact selectedContact=(Contact)clicked_Panel.Tag;
+
+            currentContact=(Contact)clicked_Panel.Tag;
         }
     }
 }

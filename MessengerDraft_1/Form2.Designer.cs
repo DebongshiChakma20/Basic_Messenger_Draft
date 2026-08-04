@@ -32,7 +32,7 @@
             linkLabelSI = new LinkLabel();
             btnSignIn = new Button();
             tbxPass = new TextBox();
-            tbxName = new TextBox();
+            tbxUserId = new TextBox();
             lblPass = new Label();
             lblName = new Label();
             btnbackSignIn = new Button();
@@ -45,21 +45,21 @@
             panel1.Controls.Add(linkLabelSI);
             panel1.Controls.Add(btnSignIn);
             panel1.Controls.Add(tbxPass);
-            panel1.Controls.Add(tbxName);
+            panel1.Controls.Add(tbxUserId);
             panel1.Controls.Add(lblPass);
             panel1.Controls.Add(lblName);
             panel1.Location = new Point(275, 134);
             panel1.Name = "panel1";
-            panel1.Size = new Size(484, 356);
+            panel1.Size = new Size(484, 303);
             panel1.TabIndex = 0;
             // 
             // linkLabelSI
             // 
             linkLabelSI.AutoSize = true;
-            linkLabelSI.Location = new Point(182, 262);
+            linkLabelSI.Location = new Point(159, 256);
             linkLabelSI.Margin = new Padding(4, 0, 4, 0);
             linkLabelSI.Name = "linkLabelSI";
-            linkLabelSI.Size = new Size(151, 21);
+            linkLabelSI.Size = new Size(189, 28);
             linkLabelSI.TabIndex = 9;
             linkLabelSI.TabStop = true;
             linkLabelSI.Text = "Click here to sign up";
@@ -74,6 +74,7 @@
             btnSignIn.TabIndex = 8;
             btnSignIn.Text = "Sign in";
             btnSignIn.UseVisualStyleBackColor = true;
+            btnSignIn.Click += btnSignIn_Click;
             // 
             // tbxPass
             // 
@@ -81,16 +82,16 @@
             tbxPass.Margin = new Padding(4);
             tbxPass.Name = "tbxPass";
             tbxPass.PasswordChar = '*';
-            tbxPass.Size = new Size(298, 29);
+            tbxPass.Size = new Size(298, 34);
             tbxPass.TabIndex = 6;
             // 
-            // tbxName
+            // tbxUserId
             // 
-            tbxName.Location = new Point(122, 76);
-            tbxName.Margin = new Padding(4);
-            tbxName.Name = "tbxName";
-            tbxName.Size = new Size(298, 29);
-            tbxName.TabIndex = 7;
+            tbxUserId.Location = new Point(122, 76);
+            tbxUserId.Margin = new Padding(4);
+            tbxUserId.Name = "tbxUserId";
+            tbxUserId.Size = new Size(298, 34);
+            tbxUserId.TabIndex = 7;
             // 
             // lblPass
             // 
@@ -99,7 +100,7 @@
             lblPass.Location = new Point(25, 142);
             lblPass.Margin = new Padding(4, 0, 4, 0);
             lblPass.Name = "lblPass";
-            lblPass.Size = new Size(79, 21);
+            lblPass.Size = new Size(97, 28);
             lblPass.TabIndex = 4;
             lblPass.Text = "Password:";
             // 
@@ -110,7 +111,7 @@
             lblName.Location = new Point(42, 79);
             lblName.Margin = new Padding(4, 0, 4, 0);
             lblName.Name = "lblName";
-            lblName.Size = new Size(62, 21);
+            lblName.Size = new Size(77, 28);
             lblName.TabIndex = 5;
             lblName.Text = "User Id:";
             // 
@@ -126,7 +127,7 @@
             // 
             // logForm
             // 
-            AutoScaleDimensions = new SizeF(9F, 21F);
+            AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.signinpanel;
             ClientSize = new Size(1029, 630);
@@ -148,7 +149,7 @@
         private LinkLabel linkLabelSI;
         private Button btnSignIn;
         private TextBox tbxPass;
-        private TextBox tbxName;
+        private TextBox tbxUserId;
         private Label lblPass;
         private Label lblName;
         private Button btnbackSignIn;

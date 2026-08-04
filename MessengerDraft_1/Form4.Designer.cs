@@ -28,80 +28,87 @@
         /// </summary>
         private void InitializeComponent()
         {
-            flowLayoutPanel1 = new FlowLayoutPanel();
+            floSearch = new FlowLayoutPanel();
             panel1 = new Panel();
-            button1 = new Button();
+            btnAddUserSearch = new Button();
             lblSearch = new Label();
             tbxSearch = new TextBox();
             btnbackAddUser = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // flowLayoutPanel1
+            // floSearch
             // 
-            flowLayoutPanel1.BackgroundImage = Properties.Resources.addPanelBAck;
-            flowLayoutPanel1.Location = new Point(12, 101);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(776, 306);
-            flowLayoutPanel1.TabIndex = 0;
+            floSearch.BackgroundImage = Properties.Resources.addPanelBAck;
+            floSearch.Location = new Point(1, 140);
+            floSearch.Margin = new Padding(3, 4, 3, 4);
+            floSearch.Name = "floSearch";
+            floSearch.Size = new Size(898, 408);
+            floSearch.TabIndex = 0;
             // 
             // panel1
             // 
-            panel1.Controls.Add(button1);
+            panel1.Controls.Add(btnAddUserSearch);
             panel1.Controls.Add(lblSearch);
             panel1.Controls.Add(tbxSearch);
-            panel1.Location = new Point(148, 12);
+            panel1.Location = new Point(169, 16);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(489, 60);
+            panel1.Size = new Size(559, 80);
             panel1.TabIndex = 4;
             // 
-            // button1
+            // btnAddUserSearch
             // 
-            button1.Font = new Font("Segoe UI", 10F);
-            button1.Location = new Point(375, 14);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 33);
-            button1.TabIndex = 6;
-            button1.Text = "Search";
-            button1.UseVisualStyleBackColor = true;
+            btnAddUserSearch.Font = new Font("Segoe UI", 10F);
+            btnAddUserSearch.Location = new Point(429, 19);
+            btnAddUserSearch.Margin = new Padding(3, 4, 3, 4);
+            btnAddUserSearch.Name = "btnAddUserSearch";
+            btnAddUserSearch.Size = new Size(86, 44);
+            btnAddUserSearch.TabIndex = 6;
+            btnAddUserSearch.Text = "Search";
+            btnAddUserSearch.UseVisualStyleBackColor = true;
+            btnAddUserSearch.Click += btnAddUserSearch_Click;
             // 
             // lblSearch
             // 
             lblSearch.AutoSize = true;
             lblSearch.Font = new Font("Segoe UI", 12F);
-            lblSearch.Location = new Point(39, 19);
+            lblSearch.Location = new Point(45, 25);
             lblSearch.Name = "lblSearch";
-            lblSearch.Size = new Size(60, 21);
+            lblSearch.Size = new Size(74, 28);
             lblSearch.TabIndex = 5;
             lblSearch.Text = "Search:";
             // 
             // tbxSearch
             // 
-            tbxSearch.Location = new Point(105, 17);
+            tbxSearch.Location = new Point(120, 23);
+            tbxSearch.Margin = new Padding(3, 4, 3, 4);
             tbxSearch.Name = "tbxSearch";
-            tbxSearch.Size = new Size(264, 23);
+            tbxSearch.Size = new Size(301, 27);
             tbxSearch.TabIndex = 4;
             tbxSearch.TextChanged += tbxSearch_TextChanged;
             // 
             // btnbackAddUser
             // 
             btnbackAddUser.BackgroundImage = Properties.Resources.backArrow;
-            btnbackAddUser.Location = new Point(12, 12);
+            btnbackAddUser.Location = new Point(14, 16);
+            btnbackAddUser.Margin = new Padding(3, 4, 3, 4);
             btnbackAddUser.Name = "btnbackAddUser";
-            btnbackAddUser.Size = new Size(48, 27);
+            btnbackAddUser.Size = new Size(55, 27);
             btnbackAddUser.TabIndex = 13;
             btnbackAddUser.UseVisualStyleBackColor = true;
             btnbackAddUser.Click += btnbackAddUser_Click;
             // 
             // addUserForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.addPanel;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(900, 600);
             Controls.Add(btnbackAddUser);
             Controls.Add(panel1);
-            Controls.Add(flowLayoutPanel1);
+            Controls.Add(floSearch);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "addUserForm";
             Text = "Add User";
             FormClosing += addUserForm_FormClosing;
@@ -112,9 +119,9 @@
 
         #endregion
 
-        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel floSearch;
         private Panel panel1;
-        private Button button1;
+        private Button btnAddUserSearch;
         private Label lblSearch;
         private TextBox tbxSearch;
         private Button btnbackAddUser;
