@@ -89,7 +89,7 @@
             btnbackAddUser.BackgroundImage = Properties.Resources.backArrow;
             btnbackAddUser.Location = new Point(12, 12);
             btnbackAddUser.Name = "btnbackAddUser";
-            btnbackAddUser.Size = new Size(48, 20);
+            btnbackAddUser.Size = new Size(48, 24);
             btnbackAddUser.TabIndex = 13;
             btnbackAddUser.UseVisualStyleBackColor = true;
             btnbackAddUser.Click += btnbackAddUser_Click;

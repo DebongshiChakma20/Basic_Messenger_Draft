@@ -15,6 +15,9 @@ namespace MessengerDraft_1
         public signUpForm()
         {
             InitializeComponent();
+            lblNameSU.BackColor = Color.Transparent;
+            lblPassSU.BackColor = Color.Transparent;
+            lblUserIdSU.BackColor = Color.Transparent;
         }
 
         private void signUpForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -56,10 +56,10 @@
             // linkLabelSI
             // 
             linkLabelSI.AutoSize = true;
-            linkLabelSI.Location = new Point(159, 256);
+            linkLabelSI.Location = new Point(181, 256);
             linkLabelSI.Margin = new Padding(4, 0, 4, 0);
             linkLabelSI.Name = "linkLabelSI";
-            linkLabelSI.Size = new Size(189, 28);
+            linkLabelSI.Size = new Size(151, 21);
             linkLabelSI.TabIndex = 9;
             linkLabelSI.TabStop = true;
             linkLabelSI.Text = "Click here to sign up";
@@ -82,7 +82,7 @@
             tbxPass.Margin = new Padding(4);
             tbxPass.Name = "tbxPass";
             tbxPass.PasswordChar = '*';
-            tbxPass.Size = new Size(298, 34);
+            tbxPass.Size = new Size(298, 29);
             tbxPass.TabIndex = 6;
             // 
             // tbxUserId
@@ -90,7 +90,7 @@
             tbxUserId.Location = new Point(122, 76);
             tbxUserId.Margin = new Padding(4);
             tbxUserId.Name = "tbxUserId";
-            tbxUserId.Size = new Size(298, 34);
+            tbxUserId.Size = new Size(298, 29);
             tbxUserId.TabIndex = 7;
             // 
             // lblPass
@@ -100,7 +100,7 @@
             lblPass.Location = new Point(25, 142);
             lblPass.Margin = new Padding(4, 0, 4, 0);
             lblPass.Name = "lblPass";
-            lblPass.Size = new Size(97, 28);
+            lblPass.Size = new Size(79, 21);
             lblPass.TabIndex = 4;
             lblPass.Text = "Password:";
             // 
@@ -111,7 +111,7 @@
             lblName.Location = new Point(42, 79);
             lblName.Margin = new Padding(4, 0, 4, 0);
             lblName.Name = "lblName";
-            lblName.Size = new Size(77, 28);
+            lblName.Size = new Size(62, 21);
             lblName.TabIndex = 5;
             lblName.Text = "User Id:";
             // 
@@ -127,7 +127,7 @@
             // 
             // logForm
             // 
-            AutoScaleDimensions = new SizeF(11F, 28F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.signinpanel;
             ClientSize = new Size(1029, 630);

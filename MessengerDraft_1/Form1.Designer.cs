@@ -50,6 +50,7 @@
             pbProfile = new PictureBox();
             btnbackMain = new Button();
             replyTimer = new System.Windows.Forms.Timer(components);
+            logOutToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             panelMessage.SuspendLayout();
             panel2.SuspendLayout();
@@ -80,7 +81,7 @@
             // 
             // moreToolStripMenuItem
             // 
-            moreToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutUsToolStripMenuItem, exitToolStripMenuItem, signUpInToolStripMenuItem });
+            moreToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutUsToolStripMenuItem, exitToolStripMenuItem, signUpInToolStripMenuItem, logOutToolStripMenuItem });
             moreToolStripMenuItem.Name = "moreToolStripMenuItem";
             moreToolStripMenuItem.Size = new Size(47, 20);
             moreToolStripMenuItem.Text = "More";
@@ -88,19 +89,19 @@
             // aboutUsToolStripMenuItem
             // 
             aboutUsToolStripMenuItem.Name = "aboutUsToolStripMenuItem";
-            aboutUsToolStripMenuItem.Size = new Size(127, 22);
+            aboutUsToolStripMenuItem.Size = new Size(180, 22);
             aboutUsToolStripMenuItem.Text = "About us";
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(127, 22);
+            exitToolStripMenuItem.Size = new Size(180, 22);
             exitToolStripMenuItem.Text = "Exit";
             // 
             // signUpInToolStripMenuItem
             // 
             signUpInToolStripMenuItem.Name = "signUpInToolStripMenuItem";
-            signUpInToolStripMenuItem.Size = new Size(127, 22);
+            signUpInToolStripMenuItem.Size = new Size(180, 22);
             signUpInToolStripMenuItem.Text = "SignUp/In";
             signUpInToolStripMenuItem.Click += signUpInToolStripMenuItem_Click;
             // 
@@ -237,6 +238,12 @@
             replyTimer.Interval = 1000;
             replyTimer.Tick += replyTimer_Tick;
             // 
+            // logOutToolStripMenuItem
+            // 
+            logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
+            logOutToolStripMenuItem.Size = new Size(180, 22);
+            logOutToolStripMenuItem.Text = "Log out";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -289,5 +296,6 @@
         private RichTextBox rtbMessage;
         private Button btnbackMain;
         private System.Windows.Forms.Timer replyTimer;
+        private ToolStripMenuItem logOutToolStripMenuItem;
     }
 }
