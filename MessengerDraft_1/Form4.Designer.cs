@@ -40,10 +40,9 @@
             // floSearch
             // 
             floSearch.BackgroundImage = Properties.Resources.addPanelBAck;
-            floSearch.Location = new Point(1, 140);
-            floSearch.Margin = new Padding(3, 4, 3, 4);
+            floSearch.Location = new Point(1, 105);
             floSearch.Name = "floSearch";
-            floSearch.Size = new Size(898, 408);
+            floSearch.Size = new Size(786, 306);
             floSearch.TabIndex = 0;
             // 
             // panel1
@@ -51,19 +50,17 @@
             panel1.Controls.Add(btnAddUserSearch);
             panel1.Controls.Add(lblSearch);
             panel1.Controls.Add(tbxSearch);
-            panel1.Location = new Point(169, 16);
-            panel1.Margin = new Padding(3, 4, 3, 4);
+            panel1.Location = new Point(126, 12);
             panel1.Name = "panel1";
-            panel1.Size = new Size(559, 80);
+            panel1.Size = new Size(489, 60);
             panel1.TabIndex = 4;
             // 
             // btnAddUserSearch
             // 
             btnAddUserSearch.Font = new Font("Segoe UI", 10F);
-            btnAddUserSearch.Location = new Point(429, 19);
-            btnAddUserSearch.Margin = new Padding(3, 4, 3, 4);
+            btnAddUserSearch.Location = new Point(375, 14);
             btnAddUserSearch.Name = "btnAddUserSearch";
-            btnAddUserSearch.Size = new Size(86, 44);
+            btnAddUserSearch.Size = new Size(75, 33);
             btnAddUserSearch.TabIndex = 6;
             btnAddUserSearch.Text = "Search";
             btnAddUserSearch.UseVisualStyleBackColor = true;
@@ -73,42 +70,39 @@
             // 
             lblSearch.AutoSize = true;
             lblSearch.Font = new Font("Segoe UI", 12F);
-            lblSearch.Location = new Point(45, 25);
+            lblSearch.Location = new Point(39, 19);
             lblSearch.Name = "lblSearch";
-            lblSearch.Size = new Size(74, 28);
+            lblSearch.Size = new Size(60, 21);
             lblSearch.TabIndex = 5;
             lblSearch.Text = "Search:";
             // 
             // tbxSearch
             // 
-            tbxSearch.Location = new Point(120, 23);
-            tbxSearch.Margin = new Padding(3, 4, 3, 4);
+            tbxSearch.Location = new Point(105, 17);
             tbxSearch.Name = "tbxSearch";
-            tbxSearch.Size = new Size(301, 27);
+            tbxSearch.Size = new Size(264, 23);
             tbxSearch.TabIndex = 4;
             tbxSearch.TextChanged += tbxSearch_TextChanged;
             // 
             // btnbackAddUser
             // 
             btnbackAddUser.BackgroundImage = Properties.Resources.backArrow;
-            btnbackAddUser.Location = new Point(14, 16);
-            btnbackAddUser.Margin = new Padding(3, 4, 3, 4);
+            btnbackAddUser.Location = new Point(12, 12);
             btnbackAddUser.Name = "btnbackAddUser";
-            btnbackAddUser.Size = new Size(55, 27);
+            btnbackAddUser.Size = new Size(48, 20);
             btnbackAddUser.TabIndex = 13;
             btnbackAddUser.UseVisualStyleBackColor = true;
             btnbackAddUser.Click += btnbackAddUser_Click;
             // 
             // addUserForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.addPanel;
-            ClientSize = new Size(900, 600);
+            ClientSize = new Size(788, 450);
             Controls.Add(btnbackAddUser);
             Controls.Add(panel1);
             Controls.Add(floSearch);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "addUserForm";
             Text = "Add User";
             FormClosing += addUserForm_FormClosing;

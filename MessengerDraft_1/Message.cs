@@ -8,5 +8,9 @@ namespace MessengerDraft_1
 {
     internal class Message
     {
+        public string recreiverId { get; set; }
+        public string senderId { get; set; }
+        public string messageText { get; set; }
+        public DateTime time { get; set; }
     }
 }

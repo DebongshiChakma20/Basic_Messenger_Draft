@@ -2,6 +2,7 @@ namespace MessengerDraft_1
 {
     public partial class MainForm : Form
     {
+        private string pendingReply = "";
         private Contact currentContact;
 
         public MainForm(string userId)
@@ -12,11 +13,12 @@ namespace MessengerDraft_1
 
         List<Panel> myContactListPanel = new List<Panel>();
         List<Contact> myContacts = new List<Contact>();
+        List<Message> allMsg = new List<Message>();
         public MainForm()
         {
             InitializeComponent();
             btnbackMain.BackColor = Color.Transparent;
-            
+
         }
 
 
@@ -52,42 +54,25 @@ namespace MessengerDraft_1
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            Panel row = new Panel();
-            row.Width = floMsg.ClientSize.Width - 25;
-            row.AutoSize = true;
-            row.BackColor = Color.Transparent;
-            row.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            if(currentContact == null)
+            {
+                MessageBox.Show("Please select a contact.");
+                return;
+            }
+            Message message = new Message();
 
-            Panel msg = new Panel();
-            msg.AutoSize = true;
-            msg.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            msg.BackColor = Color.Transparent;
-            msg.Padding = new Padding(10);
-            msg.Anchor = AnchorStyles.Right | AnchorStyles.Top;
-            msg.Location = new Point(row.ClientSize.Width - msg.PreferredSize.Width, 10);
+            message.senderId = lblUsersId.Text;
+            message.messageText = rtbMessage.Text;
+            message.time = DateTime.Now;
+            message.recreiverId = currentContact.id;
 
-
-            Label lbl = new Label();
-            lbl.Text = rtbMessage.Text;
-            lbl.AutoSize = true;
-            lbl.BackColor = Color.White;
-            lbl.Font = new Font("Sage UI", 15, FontStyle.Regular);
-            lbl.MaximumSize = new Size(180, 0);
-            lbl.Location = new Point(10, 10);
-
-
-            msg.Controls.Add(lbl);
-            msg.PerformLayout();
-            msg.Size = msg.PreferredSize;
-
-            msg.Location = new Point(row.Width - msg.Width - 10, 10);
-
-            row.Height = row.Height + 20;
-            row.Controls.Add(msg);
-
-            floMsg.Controls.Add(row);
+            messageOwnDisplay(message);
+            allMsg.Add(message);
 
             rtbMessage.Clear();
+
+            pendingReply = GetAutoReply();
+            replyTimer.Start();
 
         }
 
@@ -98,12 +83,12 @@ namespace MessengerDraft_1
 
         private void pbProfile_Click(object sender, EventArgs e)
         {
-            OpenFileDialog profilePic=new OpenFileDialog();
+            OpenFileDialog profilePic = new OpenFileDialog();
 
             profilePic.Title = "Select a profile picture";
             profilePic.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
 
-            if(profilePic.ShowDialog() == DialogResult.OK)
+            if (profilePic.ShowDialog() == DialogResult.OK)
             {
                 pbProfile.Image = Image.FromFile(profilePic.FileName);
                 pbProfile.SizeMode = PictureBoxSizeMode.Zoom;
@@ -130,7 +115,7 @@ namespace MessengerDraft_1
             lblNameOfContact.Location = new Point(130, 15);
             lblNameOfContact.AutoSize = true;
             lblNameOfContact.Font = new Font("Segoe UI", 8, FontStyle.Regular);
-             
+
             Label lblStatus = new Label();
             lblStatus.Text = contacts.status;
             lblStatus.Location = new Point(230, 15);
@@ -140,7 +125,7 @@ namespace MessengerDraft_1
             singleContactPanel.Controls.Add(lblNameOfContact);
             singleContactPanel.Controls.Add(lblStatus);
 
-            singleContactPanel.Tag= contacts;
+            singleContactPanel.Tag = contacts;
 
             singleContactPanel.Click += contact_Click;
             lblIdOfContact.Click += contact_Click;
@@ -150,7 +135,8 @@ namespace MessengerDraft_1
             fopContact.Controls.Add(singleContactPanel);
         }
 
-        public void AddContact(Contact contact) {
+        public void AddContact(Contact contact)
+        {
             myContacts.Add(contact);
 
             addContactToFlow(contact);
@@ -158,8 +144,8 @@ namespace MessengerDraft_1
 
         public void contact_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Clicked!");
-            Control clicked=(Control)sender;
+            
+            Control clicked = (Control)sender;
 
             Panel clicked_Panel;
 
@@ -167,12 +153,156 @@ namespace MessengerDraft_1
             {
                 clicked_Panel = (Panel)clicked;
             }
-            else{
+            else
+            {
                 clicked_Panel = (Panel)clicked.Parent;
             }
-            Contact selectedContact=(Contact)clicked_Panel.Tag;
+            Contact selectedContact = (Contact)clicked_Panel.Tag;
 
-            currentContact=(Contact)clicked_Panel.Tag;
+            currentContact = (Contact)clicked_Panel.Tag;
+            loadConversation(currentContact);
+
+        }
+
+        private void loadConversation(Contact contact)
+        {
+            floMsg.Controls.Clear();
+
+            foreach (Message msg in allMsg)
+            {
+                if ((msg.senderId ==lblUsersId.Text && msg.recreiverId == contact.id) || (msg.senderId == contact.id && msg.recreiverId == lblUsersId.Text))
+                {
+                    if(msg.senderId == lblUsersId.Text)
+                    {
+                        messageOwnDisplay(msg);
+                    }
+                    else
+                    {
+                        messageOThersDisplay(msg);
+                    }
+                }
+                
+            }
+
+        }
+
+        private void messageOwnDisplay(Message message)
+        {
+            Panel row = new Panel();
+            row.Width = floMsg.ClientSize.Width - 25;
+            row.AutoSize = true;
+            row.BackColor = Color.Transparent;
+            row.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            Panel msg = new Panel();
+            msg.AutoSize = true;
+            msg.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            msg.BackColor = Color.Transparent;
+            msg.Padding = new Padding(10);
+            msg.Anchor = AnchorStyles.Right | AnchorStyles.Top;
+            msg.Location = new Point(row.ClientSize.Width - msg.PreferredSize.Width, 10);
+
+
+            Label lbl = new Label();
+            lbl.Text = message.messageText;
+            lbl.AutoSize = true;
+            lbl.BackColor = Color.White;
+            lbl.Font = new Font("Sage UI", 15, FontStyle.Regular);
+            lbl.MaximumSize = new Size(180, 0);
+            lbl.Location = new Point(10, 10);
+
+
+            msg.Controls.Add(lbl);
+            msg.PerformLayout();
+            msg.Size = msg.PreferredSize;
+
+            msg.Location = new Point(row.Width - msg.Width - 10, 10);
+
+            row.Height = row.Height + 20;
+            row.Controls.Add(msg);
+
+            floMsg.Controls.Add(row);
+        }
+
+        private void messageOThersDisplay(Message message)
+        {
+            Panel row = new Panel();
+            row.Width = floMsg.ClientSize.Width - 25;
+            row.AutoSize = true;
+            row.BackColor = Color.Cyan;
+            row.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            Panel msg = new Panel();
+            msg.AutoSize = true;
+            msg.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            msg.BackColor = Color.Cyan;
+            msg.Padding = new Padding(10);
+            msg.Anchor = AnchorStyles.Right | AnchorStyles.Top;
+            msg.Location = new Point(row.ClientSize.Width - msg.PreferredSize.Width, 10);
+
+
+            Label lbl = new Label();
+            lbl.Text = message.messageText;
+            lbl.AutoSize = true;
+            lbl.BackColor = Color.White;
+            lbl.Font = new Font("Sage UI", 15, FontStyle.Regular);
+            lbl.MaximumSize = new Size(180, 0);
+            lbl.Location = new Point(10, 10);
+
+
+            msg.Controls.Add(lbl);
+            msg.PerformLayout();
+            msg.Size = msg.PreferredSize;
+
+            msg.Location = new Point(10, 10);
+
+            row.Height = row.Height + 20;
+            row.Controls.Add(msg);
+
+            floMsg.Controls.Add(row);
+        }
+
+        //this is random message for testing purpose
+
+        private string GetAutoReply()
+        {
+            string[] replies =
+            {
+        "Hi!",
+        "Hello 😊",
+        "How are you?",
+        "Nice!",
+        "Okay.",
+        "See you later.",
+        "Sounds good.",
+        "😂",
+        "I'm busy right now.",
+        "Let's talk later."
+    };
+
+            Random random = new Random();
+
+            return replies[random.Next(replies.Length)];
+        }
+
+        private void replyTimer_Tick(object sender, EventArgs e)
+        {
+            replyTimer.Stop();
+
+            Message autoReply=new Message();
+            autoReply.senderId = currentContact.id;
+            autoReply.recreiverId = lblUsersId.Text;
+            autoReply.time = DateTime.Now;
+            autoReply.messageText = pendingReply;
+            allMsg.Add(autoReply);
+
+            Panel row = new Panel();
+            row.Width = floMsg.ClientSize.Width - 25;
+            row.AutoSize = true;
+            row.BackColor = Color.Transparent;
+            row.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            messageOThersDisplay(autoReply);
         }
     }
 }

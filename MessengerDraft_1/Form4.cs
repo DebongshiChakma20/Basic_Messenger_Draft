@@ -78,12 +78,12 @@ namespace MessengerDraft_1
 
             Label lblStatus = new Label();
             lblStatus.Text = contact.status;
-            lblStatus.Location = new Point(580, 20);
+            lblStatus.Location = new Point(450, 20);
             lblStatus.AutoSize = true;
 
             Button btnAdd = new Button();
             btnAdd.Text = "Add";
-            btnAdd.Location = new Point(780, 17);
+            btnAdd.Location = new Point(600, 17);
             btnAdd.AutoSize = true;
 
             btnAdd.Tag = contact;

@@ -12,7 +12,7 @@ namespace MessengerDraft_1
         public static List<Contact> contactUsers = new List<Contact>()
         {
             new Contact() { id="24-12345-3",name="DC",status="Online"},
-            new Contact() { id="24-12345-4",name="AC"},
+            new Contact() { id="24-12345-4",name="AC",status="Online"},
         };
     }
 }
