@@ -14,7 +14,9 @@ namespace MessengerDraft_1
     {
         public MainForm mainForm;
         private List<Contact> contacts;
+#pragma warning disable CS8618
         public addUserForm(MainForm mForm)
+#pragma warning restore CS8618 
         {
             InitializeComponent();
             mainForm = mForm;
@@ -46,7 +48,7 @@ namespace MessengerDraft_1
 
         private void btnAddUserSearch_Click(object sender, EventArgs e)
         {
-            Contact found=ContactRepo.contactUsers.FirstOrDefault(x=>x.id==tbxSearch.Text);
+            Contact ? found = ContactRepo.contactUsers.FirstOrDefault(x => x.id == tbxSearch.Text);
 
             if (found != null)
             {
@@ -97,15 +99,16 @@ namespace MessengerDraft_1
 
             floSearch.Controls.Add(searchResultPanel);
         }
-        private void btnAddUser_Click(object sender, EventArgs e)
+        private void btnAddUser_Click(object? sender, EventArgs e)
         {
-            Button btn = (Button)sender;
+            if (sender is not Button btn)
+                return;
 
-            Contact selected = (Contact)btn.Tag;
+            if (btn.Tag is not Contact selected)
+                return;
 
             mainForm.AddContact(selected);
             mainForm.Show();
-
             this.Hide();
         }
     }

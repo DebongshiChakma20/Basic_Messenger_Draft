@@ -53,12 +53,28 @@ namespace MessengerDraft_1
                 MessageBox.Show("Please enter both User ID and Password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            else {
-                
+            else
+            {
+
                 MainForm mainForm = new MainForm(userId);
                 mainForm.Show();
                 this.Hide();
             }
+            if (GlobalData.UserCredentials.ContainsKey(userId))
+            {
+
+                if (GlobalData.UserCredentials[userId] == password)
+                {
+                    MessageBox.Show("Sign in successful! Welcome back, " + userId + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+                }
+                else
+                {
+                    MessageBox.Show("Incorrect password. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
+    
 }
