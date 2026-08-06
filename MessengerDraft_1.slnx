@@ -1,3 +1,6 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="storage.cs" />
+  </Folder>
   <Project Path="MessengerDraft_1/MessengerDraft_1.csproj" />
 </Solution>
