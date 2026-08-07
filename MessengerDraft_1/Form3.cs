@@ -39,28 +39,23 @@ namespace MessengerDraft_1
             }
             else
             {
+                if (GlobalData.UserCredentials.ContainsKey(userId))
+                {
+                    MessageBox.Show("User Id already exists!");
+                    return;
+                }
 
                 MainForm mainForm = new MainForm(userId);
                 MessageBox.Show("Sign Up successful! Welcome, " + name + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Account created successfully!");
                 mainForm.Show();
                 this.Hide();
             }
-            if (GlobalData.UserCredentials.ContainsKey(name))
-            {
-                MessageBox.Show("Username already exists!");
-                return;
-            }
-            else
-            {
-                MessageBox.Show("This username is already taken! Please choose another one.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
 
-            GlobalData.UserCredentials.Add(name, password);
-            GlobalData.UserCredentials.Add(name,password);
+            GlobalData.UserCredentials.Add(userId, password);
 
-            MessageBox.Show("Account created successfully!");
+           
         }
 
         private void btnbackSignUp_Click(object sender, EventArgs e)

@@ -1,7 +1,13 @@
+using System.Text;
+using System.Net.Sockets;
+using System.Net.Sockets;
+
 namespace MessengerDraft_1
 {
     public partial class MainForm : Form
     {
+        private Client client = new Client();
+
         private string pendingReply = "";
         private Contact currentContact;
 
@@ -45,16 +51,47 @@ namespace MessengerDraft_1
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+            client.Disconnect();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            try
+            {
+                client.Connect();
+                client.MessageReceived += clientMessageReceived;
+                client.StartListening();
+            }
+            catch (Exception ex) { 
+                MessageBox.Show("Error connecting to server: " + ex.Message);
+            }
         }
+
+        private void clientMessageReceived(string text)
+        {
+            this.Invoke(() =>
+            {
+                if (currentContact == null)
+                    return;
+
+                Message message = new Message();
+
+                message.senderId = currentContact.id;
+                message.recreiverId = lblUsersId.Text;
+                message.messageText = text;
+                message.time = DateTime.Now;
+
+                allMsg.Add(message);
+
+                loadConversation(currentContact);
+            });
+        }
+
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            if(currentContact == null)
+            byte[] data=Encoding.UTF8.GetBytes(rtbMessage.Text);
+            if (currentContact == null)
             {
                 MessageBox.Show("Please select a contact.");
                 return;
@@ -68,18 +105,15 @@ namespace MessengerDraft_1
 
             messageOwnDisplay(message);
             allMsg.Add(message);
-
+            client.Send(rtbMessage.Text);
             rtbMessage.Clear();
 
-            pendingReply = GetAutoReply();
+            
             replyTimer.Start();
 
         }
 
-        private void fopContact_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+      
 
         private void pbProfile_Click(object sender, EventArgs e)
         {
@@ -144,7 +178,7 @@ namespace MessengerDraft_1
 
         public void contact_Click(object sender, EventArgs e)
         {
-            
+
             Control clicked = (Control)sender;
 
             Panel clicked_Panel;
@@ -170,9 +204,9 @@ namespace MessengerDraft_1
 
             foreach (Message msg in allMsg)
             {
-                if ((msg.senderId ==lblUsersId.Text && msg.recreiverId == contact.id) || (msg.senderId == contact.id && msg.recreiverId == lblUsersId.Text))
+                if ((msg.senderId == lblUsersId.Text && msg.recreiverId == contact.id) || (msg.senderId == contact.id && msg.recreiverId == lblUsersId.Text))
                 {
-                    if(msg.senderId == lblUsersId.Text)
+                    if (msg.senderId == lblUsersId.Text)
                     {
                         messageOwnDisplay(msg);
                     }
@@ -181,7 +215,7 @@ namespace MessengerDraft_1
                         messageOThersDisplay(msg);
                     }
                 }
-                
+
             }
 
         }
@@ -261,48 +295,7 @@ namespace MessengerDraft_1
 
             floMsg.Controls.Add(row);
         }
-
-        //this is random message for testing purpose
-
-        private string GetAutoReply()
-        {
-            string[] replies =
-            {
-        "Hi!",
-        "Hello 😊",
-        "How are you?",
-        "Nice!",
-        "Okay.",
-        "See you later.",
-        "Sounds good.",
-        "😂",
-        "I'm busy right now.",
-        "Let's talk later."
-    };
-
-            Random random = new Random();
-
-            return replies[random.Next(replies.Length)];
-        }
-
-        private void replyTimer_Tick(object sender, EventArgs e)
-        {
-            replyTimer.Stop();
-
-            Message autoReply=new Message();
-            autoReply.senderId = currentContact.id;
-            autoReply.recreiverId = lblUsersId.Text;
-            autoReply.time = DateTime.Now;
-            autoReply.messageText = pendingReply;
-            allMsg.Add(autoReply);
-
-            Panel row = new Panel();
-            row.Width = floMsg.ClientSize.Width - 25;
-            row.AutoSize = true;
-            row.BackColor = Color.Transparent;
-            row.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-            messageOThersDisplay(autoReply);
-        }
+        
+        
     }
 }
