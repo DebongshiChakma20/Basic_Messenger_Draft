@@ -82,7 +82,7 @@
             tbxSearch.Name = "tbxSearch";
             tbxSearch.Size = new Size(264, 23);
             tbxSearch.TabIndex = 4;
-            tbxSearch.TextChanged += tbxSearch_TextChanged;
+           
             // 
             // btnbackAddUser
             // 
@@ -106,6 +106,7 @@
             Name = "addUserForm";
             Text = "Add User";
             FormClosing += addUserForm_FormClosing;
+       
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);

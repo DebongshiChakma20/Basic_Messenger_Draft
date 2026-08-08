@@ -2,33 +2,37 @@
 using System.Net.Sockets;
 using System.Text;
 
+UserRepository users = new UserRepository();
+
 TcpListener server = new TcpListener(IPAddress.Any, 5000);
 
 server.Start();
 
-Console.WriteLine("Server started...");
+Console.WriteLine("Messenger Server started...");
+Console.WriteLine("Waiting for clients...");
 
 while (true)
 {
     TcpClient client = server.AcceptTcpClient();
 
-    Console.WriteLine("Client Connected");
+    Console.WriteLine("Client connected.");
 
+    // Handle this client separately
     Task.Run(() => HandleClient(client));
 }
 
-static void HandleClient(TcpClient client)
+
+void HandleClient(TcpClient client)
 {
     NetworkStream stream = client.GetStream();
 
     try
     {
-        while (true)
+        while (client.Connected)
         {
             byte[] buffer = new byte[1024];
 
-            int bytesRead =
-                stream.Read(buffer, 0, buffer.Length);
+            int bytesRead = stream.Read(buffer, 0, buffer.Length);
 
             if (bytesRead == 0)
                 break;
@@ -36,20 +40,53 @@ static void HandleClient(TcpClient client)
             string message =
                 Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-            Console.WriteLine(message);
+            Console.WriteLine("Received: " + message);
 
-            byte[] reply =
-                Encoding.UTF8.GetBytes("Received");
 
-            stream.Write(reply, 0, reply.Length);
+            // SEARCH USER
+            if (message.StartsWith("SEARCH_USER:"))
+            {
+                string userId =
+                    message.Substring("SEARCH_USER:".Length);
+
+                Console.WriteLine("Searching for: " + userId);
+
+                if (users.UserExists(userId))
+                {
+                    string response =
+                        $"USER_FOUND|{userId}|Unknown|Online";
+
+                    byte[] reply =
+                        Encoding.UTF8.GetBytes(response);
+
+                    stream.Write(reply, 0, reply.Length);
+                }
+                else
+                {
+                    byte[] reply =
+                        Encoding.UTF8.GetBytes("USER_NOT_FOUND");
+
+                    stream.Write(reply, 0, reply.Length);
+                }
+            }
+
+            // OTHER MESSAGE
+            else
+            {
+                byte[] reply =
+                    Encoding.UTF8.GetBytes("Received");
+
+                stream.Write(reply, 0, reply.Length);
+            }
         }
     }
-    catch
+    catch (Exception ex)
     {
-
+        Console.WriteLine(
+            "Client error: " + ex.Message);
     }
 
     client.Close();
 
-    Console.WriteLine("Disconnected");
+    Console.WriteLine("Client disconnected.");
 }

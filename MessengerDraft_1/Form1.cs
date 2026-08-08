@@ -8,7 +8,7 @@ namespace MessengerDraft_1
     {
         private Client client = new Client();
 
-        private string pendingReply = "";
+     
         private Contact currentContact;
 
         public MainForm(string userId)
@@ -40,7 +40,7 @@ namespace MessengerDraft_1
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            addUserForm addForm = new addUserForm(this);
+            addUserForm addForm = new addUserForm(this,client,lblUsersId.Text);
 
 
             addForm.Show();
@@ -90,10 +90,15 @@ namespace MessengerDraft_1
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            byte[] data=Encoding.UTF8.GetBytes(rtbMessage.Text);
+           
             if (currentContact == null)
             {
                 MessageBox.Show("Please select a contact.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(rtbMessage.Text))
+            {
                 return;
             }
             Message message = new Message();
@@ -107,9 +112,6 @@ namespace MessengerDraft_1
             allMsg.Add(message);
             client.Send(rtbMessage.Text);
             rtbMessage.Clear();
-
-            
-            replyTimer.Start();
 
         }
 

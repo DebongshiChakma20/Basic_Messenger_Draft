@@ -12,19 +12,43 @@ public class Client
 
     public void Connect()
     {
-        client = new TcpClient();
+        try
+        {
+            client = new TcpClient();
 
-        client.Connect("127.0.0.1", 5000);
+            client.Connect("127.0.0.1", 5000);
 
-        stream = client.GetStream();
+            stream = client.GetStream();
+
+            MessageBox.Show("Connected to Messenger Server.");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Connection error: " + ex.Message);
+        }
     }
-
 
     public void Send(string message)
     {
-        byte[] data = Encoding.UTF8.GetBytes(message);
+        try
+        {
+            if (client == null || !client.Connected)
+            {
+                MessageBox.Show("Client is NOT connected.");
+                return;
+            }
 
-        stream.Write(data, 0, data.Length);
+            byte[] data = Encoding.UTF8.GetBytes(message);
+
+            stream.Write(data, 0, data.Length);
+            stream.Flush();
+
+            MessageBox.Show("Sent successfully: " + message);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Send error: " + ex.Message);
+        }
     }
 
     public string ReceiveMessage()
@@ -49,7 +73,7 @@ public class Client
 
     public void StartListening()
     {
-        Task.Run(() =>
+        Thread thread = new Thread(() =>
         {
             while (client.Connected)
             {
@@ -61,6 +85,9 @@ public class Client
                 }
             }
         });
+
+        thread.IsBackground = true;
+        thread.Start();
     }
 
     public void Disconnect()

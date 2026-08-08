@@ -12,24 +12,19 @@ namespace MessengerDraft_1
 {
     public partial class addUserForm : Form
     {
-        public MainForm mainForm;
+        public MainForm mForm;
         private List<Contact> contacts;
-#pragma warning disable CS8618
-        public addUserForm(MainForm mForm)
-#pragma warning restore CS8618 
+        private Client client;
+        private string currentUserId;
+
+        public addUserForm(MainForm mForm,Client client,string userId)
         {
             InitializeComponent();
-            mainForm = mForm;
-        }
+            this.mForm = mForm;
+            currentUserId = userId;
+            this.client = client;
 
-        private void lblSearch_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tbxSearch_TextChanged(object sender, EventArgs e)
-        {
-
+            client.MessageReceived += clientMessageReceived;
         }
 
         private void addUserForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -48,16 +43,19 @@ namespace MessengerDraft_1
 
         private void btnAddUserSearch_Click(object sender, EventArgs e)
         {
-            Contact ? found = ContactRepo.contactUsers.FirstOrDefault(x => x.id == tbxSearch.Text);
+            string userId = tbxSearch.Text.Trim();
 
-            if (found != null)
+            if (string.IsNullOrEmpty(userId))
             {
-                ShowSearchResult(found);
+                MessageBox.Show("Enter a User ID.");
+                return;
             }
-            else
-            {
-                MessageBox.Show("User not found.");
-            }
+
+            MessageBox.Show("Sending: SEARCH_USER:" + userId);
+
+            string request = $"SEARCH_USER:{userId}";
+            client.Send(request);
+
         }
 
         private void ShowSearchResult(Contact contact)
@@ -68,9 +66,9 @@ namespace MessengerDraft_1
             searchResultPanel.Size = new Size(890, 60);
             searchResultPanel.BorderStyle = BorderStyle.FixedSingle;
 
-            Label lblId=new Label();
+            Label lblId = new Label();
             lblId.Text = contact.id;
-            lblId.AutoSize=true;
+            lblId.AutoSize = true;
             lblId.Location = new Point(20, 20);
 
             Label lblName = new Label();
@@ -107,9 +105,34 @@ namespace MessengerDraft_1
             if (btn.Tag is not Contact selected)
                 return;
 
-            mainForm.AddContact(selected);
-            mainForm.Show();
+            mForm.AddContact(selected);
+            mForm.Show();
             this.Hide();
+        }
+
+        private void clientMessageReceived(string text)
+        {
+            this.Invoke(() =>
+            {
+                string[] parts = text.Split('|');
+
+                if (parts[0] == "USER_NOT_FOUND")
+                {
+                    MessageBox.Show("User not found.");
+                    return;
+                }
+
+                if (parts[0] == "USER_FOUND")
+                {
+                    Contact contact = new Contact();
+
+                    contact.id = parts[1];
+                    contact.name = parts[2];
+                    contact.status = parts[3];
+
+                    ShowSearchResult(contact);
+                }
+            });
         }
     }
 }
