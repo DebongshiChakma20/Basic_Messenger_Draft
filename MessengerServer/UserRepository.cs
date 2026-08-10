@@ -75,10 +75,10 @@ public class UserRepository
         connection.Open();
 
         string sql = """
-        SELECT UserId, Username
-        FROM UserInfo
-        WHERE UserId = @userId
-        """;
+            SELECT UserId, Username
+            FROM UserInfo
+            WHERE UserId = @userId
+            """;
 
         using SqlCommand command = new SqlCommand(sql, connection);
 

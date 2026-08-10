@@ -1,19 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using System.Windows.Forms;
 
 public class Client
 {
-    private TcpClient client;
-    private NetworkStream stream;
+    private TcpClient? client;
+    private NetworkStream? stream;
+    private bool listening = false;
+
+    public event Action<string>? MessageReceived;
 
     public void Connect()
     {
         try
         {
+            if (client != null && client.Connected)
+                return;
+
             client = new TcpClient();
 
             client.Connect("127.0.0.1", 5000);
@@ -32,7 +37,7 @@ public class Client
     {
         try
         {
-            if (client == null || !client.Connected)
+            if (client == null || stream == null || !client.Connected)
             {
                 MessageBox.Show("Client is NOT connected.");
                 return;
@@ -43,7 +48,7 @@ public class Client
             stream.Write(data, 0, data.Length);
             stream.Flush();
 
-            MessageBox.Show("Sent successfully: " + message);
+            Console.WriteLine("Sent: " + message);
         }
         catch (Exception ex)
         {
@@ -55,6 +60,9 @@ public class Client
     {
         try
         {
+            if (stream == null)
+                return "";
+
             byte[] buffer = new byte[1024];
 
             int bytesRead = stream.Read(buffer, 0, buffer.Length);
@@ -62,20 +70,30 @@ public class Client
             if (bytesRead == 0)
                 return "";
 
-            return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            string message =
+                Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+            Console.WriteLine("Client received: " + message);
+
+            return message;
         }
-        catch (Exception ex) {
-            return  "";
+        catch (Exception ex)
+        {
+            Console.WriteLine("Receive error: " + ex.Message);
+            return "";
         }
     }
 
-    public event Action<string>? MessageReceived;
-
     public void StartListening()
     {
+        if (listening)
+            return;
+
+        listening = true;
+
         Thread thread = new Thread(() =>
         {
-            while (client.Connected)
+            while (listening && client != null && client.Connected)
             {
                 string message = ReceiveMessage();
 
@@ -84,6 +102,8 @@ public class Client
                     MessageReceived?.Invoke(message);
                 }
             }
+
+            listening = false;
         });
 
         thread.IsBackground = true;
@@ -92,8 +112,18 @@ public class Client
 
     public void Disconnect()
     {
-        stream?.Close();
+        listening = false;
 
-        client?.Close();
+        try
+        {
+            stream?.Close();
+            client?.Close();
+        }
+        catch
+        {
+        }
+
+        stream = null;
+        client = null;
     }
 }

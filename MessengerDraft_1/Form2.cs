@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,11 +13,19 @@ namespace MessengerDraft_1
 {
     public partial class logForm : Form
     {
+        private Client client;
         public logForm()
         {
             InitializeComponent();
             lblName.BackColor = Color.Transparent;
             lblPass.BackColor = Color.Transparent;
+
+            client = new Client();
+            client.Connect();
+
+            client.MessageReceived += clientMessageReceived;
+            client.StartListening();
+
         }
 
 
@@ -36,7 +45,8 @@ namespace MessengerDraft_1
 
         private void btnbackSignIn_Click(object sender, EventArgs e)
         {
-            MainForm mainForm = new MainForm();
+            string userId = tbxUserId.Text.Trim();
+            MainForm mainForm = new MainForm(userId,client);
             mainForm.Show();
 
             this.Hide();
@@ -53,28 +63,45 @@ namespace MessengerDraft_1
                 MessageBox.Show("Please enter both User ID and Password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            else
-            {
-
-                MainForm mainForm = new MainForm(userId);
-                mainForm.Show();
-                this.Hide();
-            }
-            if (GlobalData.UserCredentials.ContainsKey(userId))
-            {
-
-                if (GlobalData.UserCredentials[userId] == password)
-                {
-                    MessageBox.Show("Sign in successful! Welcome back, " + userId + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-
-                }
-                else
-                {
-                    MessageBox.Show("Incorrect password. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            string request = $"LOGIN:{userId}|{password}";
+            client.Send(request);
         }
+
+        private void clientMessageReceived(string text)
+        {
+            this.Invoke(() =>
+            {
+                if (text == "LOGIN_SUCCESS")
+                {
+                    string userId = tbxUserId.Text.Trim();
+
+                    MessageBox.Show(
+                        "Sign in successful! Welcome back, " + userId + "!",
+                        "Success",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    client.MessageReceived -= clientMessageReceived;
+                    MainForm mainForm = new MainForm(userId, client);
+
+                    mainForm.Show();
+
+                    this.Hide();
+                }
+                else if (text == "LOGIN_FAILED")
+                {
+                    MessageBox.Show(
+                        "Incorrect User ID or Password.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+
+                
+            });
+        }
+
+
     }
     
 }

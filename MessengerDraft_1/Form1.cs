@@ -6,26 +6,23 @@ namespace MessengerDraft_1
 {
     public partial class MainForm : Form
     {
-        private Client client = new Client();
+        private Client client;
 
      
         private Contact currentContact;
 
-        public MainForm(string userId)
+        public MainForm(string userId,Client client)
         {
             InitializeComponent();
+            this.client = client;
             lblUsersId.Text = userId;
+            btnbackMain.BackColor = Color.Transparent;
         }
 
         List<Panel> myContactListPanel = new List<Panel>();
         List<Contact> myContacts = new List<Contact>();
         List<Message> allMsg = new List<Message>();
-        public MainForm()
-        {
-            InitializeComponent();
-            btnbackMain.BackColor = Color.Transparent;
-
-        }
+        
 
 
 
@@ -54,11 +51,11 @@ namespace MessengerDraft_1
             client.Disconnect();
         }
 
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             try
             {
-                client.Connect();
                 client.MessageReceived += clientMessageReceived;
                 client.StartListening();
             }
@@ -71,22 +68,33 @@ namespace MessengerDraft_1
         {
             this.Invoke(() =>
             {
-                if (currentContact == null)
+                if (!text.StartsWith("MESSAGE:"))
+                    return;
+
+                string data =
+                    text.Substring("MESSAGE:".Length);
+
+                string[] parts = data.Split('|', 2);
+
+                if (parts.Length != 2)
                     return;
 
                 Message message = new Message();
 
-                message.senderId = currentContact.id;
+                message.senderId = parts[0];
                 message.recreiverId = lblUsersId.Text;
-                message.messageText = text;
+                message.messageText = parts[1];
                 message.time = DateTime.Now;
 
                 allMsg.Add(message);
 
-                loadConversation(currentContact);
+                if (currentContact != null &&
+                    currentContact.id == message.senderId)
+                {
+                    loadConversation(currentContact);
+                }
             });
         }
-
 
         private void btnSend_Click(object sender, EventArgs e)
         {
@@ -110,7 +118,10 @@ namespace MessengerDraft_1
 
             messageOwnDisplay(message);
             allMsg.Add(message);
-            client.Send(rtbMessage.Text);
+            string send = $"SEND_MESSAGE:{lblUsersId.Text}|{currentContact.id}|{rtbMessage.Text}";
+
+
+            client.Send(send);
             rtbMessage.Clear();
 
         }

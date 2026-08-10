@@ -13,12 +13,18 @@ namespace MessengerDraft_1
 {
     public partial class signUpForm : Form
     {
+        private Client client;
         public signUpForm()
         {
             InitializeComponent();
             lblNameSU.BackColor = Color.Transparent;
             lblPassSU.BackColor = Color.Transparent;
             lblUserIdSU.BackColor = Color.Transparent;
+
+            client = new Client();
+            client.Connect();
+            client.MessageReceived += clientMessageReceived;
+            client.StartListening();
         }
 
         private void signUpForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -37,25 +43,8 @@ namespace MessengerDraft_1
                 MessageBox.Show("None of the fields can be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            else
-            {
-                if (GlobalData.UserCredentials.ContainsKey(userId))
-                {
-                    MessageBox.Show("User Id already exists!");
-                    return;
-                }
-
-                MainForm mainForm = new MainForm(userId);
-                MessageBox.Show("Sign Up successful! Welcome, " + name + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                MessageBox.Show("Account created successfully!");
-                mainForm.Show();
-                this.Hide();
-            }
-
-
-            GlobalData.UserCredentials.Add(userId, password);
-
-           
+            string request = $"REGISTER:{userId}|{name}|{password}";
+            client.Send(request);
         }
 
         private void btnbackSignUp_Click(object sender, EventArgs e)
@@ -66,6 +55,32 @@ namespace MessengerDraft_1
 
             this.Hide();
         }
+
+        private void clientMessageReceived(string text)
+        {
+            this.Invoke(() =>
+            {
+                if (text == "REGISTER_SUCCESS")
+                {
+                    MessageBox.Show("Sign Up successful!");
+
+                    string userId = tbxUserIdSU.Text.Trim();
+
+                    MainForm mainForm = new MainForm(userId,client);
+                    mainForm.Show();
+
+                    this.Hide();
+                }
+                else if (text == "REGISTER_EXISTS")
+                {
+                    MessageBox.Show("User ID already exists.");
+                }
+                else if (text == "REGISTER_FAILED")
+                {
+                    MessageBox.Show("Registration failed.");
+                }
+            });
+        }
     }
     public static class GlobalData
     {
@@ -75,4 +90,6 @@ namespace MessengerDraft_1
        
         public static List<string> UserIds = new List<string>();
     }
+
+
 }

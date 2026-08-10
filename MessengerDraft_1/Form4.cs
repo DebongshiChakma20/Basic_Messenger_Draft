@@ -33,10 +33,9 @@ namespace MessengerDraft_1
         }
 
         private void btnbackAddUser_Click(object sender, EventArgs e)
-        {
-            MainForm mainForm = new MainForm();
+        { 
 
-            mainForm.Show();
+            mForm.Show();
 
             this.Hide();
         }
