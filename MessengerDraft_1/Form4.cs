@@ -33,8 +33,8 @@ namespace MessengerDraft_1
         }
 
         private void btnbackAddUser_Click(object sender, EventArgs e)
-        { 
-
+        {
+            
             mForm.Show();
 
             this.Hide();
@@ -49,8 +49,6 @@ namespace MessengerDraft_1
                 MessageBox.Show("Enter a User ID.");
                 return;
             }
-
-            MessageBox.Show("Sending: SEARCH_USER:" + userId);
 
             string request = $"SEARCH_USER:{userId}";
             client.Send(request);
@@ -103,16 +101,55 @@ namespace MessengerDraft_1
 
             if (btn.Tag is not Contact selected)
                 return;
+            string request = $"ADD_CONTACT:{currentUserId}|{selected.id}";
+            client.Send(request);
 
-            mForm.AddContact(selected);
-            mForm.Show();
-            this.Hide();
         }
 
         private void clientMessageReceived(string text)
         {
             this.Invoke(() =>
             {
+                if (text == "CONTACT_ADD_SUCCESSFUL")
+                {
+                    
+                    string searchedId = tbxSearch.Text.Trim();
+
+                    
+                    foreach (Control control in floSearch.Controls)
+                    {
+                        if (control is Panel panel)
+                        {
+                            foreach (Control child in panel.Controls)
+                            {
+                                if (child is Button button &&
+                                    button.Tag is Contact contact)
+                                {
+                                    mForm.AddContact(contact);
+
+                                    mForm.Show();
+                                    this.Hide();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+                    return;
+                }
+
+                if (text == "CONTACT_ALREADY_EXIST")
+                {
+                    MessageBox.Show("Contact already exists.");
+                    return;
+                }
+
+                if (text == "CONTACT_ADD_FAILED")
+                {
+                    MessageBox.Show("Failed to add contact.");
+                    return;
+                }
+
                 string[] parts = text.Split('|');
 
                 if (parts[0] == "USER_NOT_FOUND")

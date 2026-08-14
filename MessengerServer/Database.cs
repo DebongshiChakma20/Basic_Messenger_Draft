@@ -2,8 +2,7 @@
 
 public class Database
 {
-    private readonly string connectionString =
-        "Server=localhost;Database=MessengerDB;Integrated Security=True;TrustServerCertificate=True;";
+    private readonly string connectionString="Server=localhost;Database=MessengerDB;Integrated Security=True;TrustServerCertificate=True;";
 
     public SqlConnection GetConnection()
     {

@@ -58,6 +58,7 @@ namespace MessengerDraft_1
             {
                 client.MessageReceived += clientMessageReceived;
                 client.StartListening();
+                client.Send($"LOAD_CONTACTS:{lblUsersId.Text}"); 
             }
             catch (Exception ex) { 
                 MessageBox.Show("Error connecting to server: " + ex.Message);
@@ -68,31 +69,80 @@ namespace MessengerDraft_1
         {
             this.Invoke(() =>
             {
-                if (!text.StartsWith("MESSAGE:"))
-                    return;
+                Console.WriteLine("Mainfrom received"+text);
 
-                string data =
-                    text.Substring("MESSAGE:".Length);
-
-                string[] parts = data.Split('|', 2);
-
-                if (parts.Length != 2)
-                    return;
-
-                Message message = new Message();
-
-                message.senderId = parts[0];
-                message.recreiverId = lblUsersId.Text;
-                message.messageText = parts[1];
-                message.time = DateTime.Now;
-
-                allMsg.Add(message);
-
-                if (currentContact != null &&
-                    currentContact.id == message.senderId)
+                if (text.StartsWith("CONTACT:"))
                 {
-                    loadConversation(currentContact);
+                    string data = text.Substring("CONTACT:".Length);
+
+                    string[] parts = data.Split('|', 3);
+
+                    if (parts.Length != 3)
+                        return;
+
+                    Contact contact = new Contact();
+
+                    contact.id = parts[0];
+                    contact.name = parts[1];
+                    contact.status = parts[2];
+
+                    AddContact(contact);
+
+                    return;
                 }
+                if (text.StartsWith("MESSAGE:")) {
+                    string data =text.Substring("MESSAGE:".Length);
+
+                    string[] parts = data.Split('|', 2);
+
+                    if (parts.Length != 2)
+                        return;
+
+                    Message message = new Message();
+
+                    message.senderId = parts[0];
+                    message.recreiverId = lblUsersId.Text;
+                    message.messageText = parts[1];
+                    message.time = DateTime.Now;
+
+                    allMsg.Add(message);
+
+                    if (currentContact != null && currentContact.id == message.senderId)
+                    {
+                        messageOThersDisplay(message);  
+                        scrollMessageBottom();
+                    }
+
+                    return;
+                }
+
+                if (text.StartsWith( "OLD_MESSAGE:")){
+                    string data = text.Substring("OLD_MESSAGE:".Length);
+                    string[] parts=data.Split('|', 3);
+
+                    if (parts.Length != 3) return;
+
+                    Message message = new Message();
+                    message.senderId = parts[0];
+                    message.recreiverId = parts[1];
+                    message.messageText = parts[2];
+                    message.time = DateTime.Now;
+
+                    allMsg.Add(message);
+
+                    return;
+                }
+
+                if (text == "MESSAGES_LOADED")
+                {
+                    if(currentContact != null)
+                    {
+                        loadConversation(currentContact);
+                    }
+
+                    return;
+                }
+                
             });
         }
 
@@ -118,6 +168,7 @@ namespace MessengerDraft_1
 
             messageOwnDisplay(message);
             allMsg.Add(message);
+            scrollMessageBottom();
             string send = $"SEND_MESSAGE:{lblUsersId.Text}|{currentContact.id}|{rtbMessage.Text}";
 
 
@@ -207,7 +258,13 @@ namespace MessengerDraft_1
             Contact selectedContact = (Contact)clicked_Panel.Tag;
 
             currentContact = (Contact)clicked_Panel.Tag;
-            loadConversation(currentContact);
+
+            string request =$"LOAD_MESSAGES:{lblUsersId.Text}|{currentContact.id}";
+
+            client.Send(request);
+
+            // Clear current conversation
+            floMsg.Controls.Clear();
 
         }
 
@@ -230,6 +287,7 @@ namespace MessengerDraft_1
                 }
 
             }
+            scrollMessageBottom();
 
         }
 
@@ -276,13 +334,13 @@ namespace MessengerDraft_1
             Panel row = new Panel();
             row.Width = floMsg.ClientSize.Width - 25;
             row.AutoSize = true;
-            row.BackColor = Color.Cyan;
+            row.BackColor = Color.Transparent;
             row.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             Panel msg = new Panel();
             msg.AutoSize = true;
             msg.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            msg.BackColor = Color.Cyan;
+            msg.BackColor = Color.Transparent;
             msg.Padding = new Padding(10);
             msg.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             msg.Location = new Point(row.ClientSize.Width - msg.PreferredSize.Width, 10);
@@ -308,7 +366,21 @@ namespace MessengerDraft_1
 
             floMsg.Controls.Add(row);
         }
-        
-        
+
+        private void scrollMessageBottom()
+        {
+            if (floMsg.Controls.Count == 0)
+                return;
+
+            floMsg.PerformLayout();
+
+            int bottom = floMsg.VerticalScroll.Maximum;
+
+            floMsg.VerticalScroll.Value = bottom;
+
+            floMsg.ScrollControlIntoView(
+                floMsg.Controls[floMsg.Controls.Count - 1]
+            );
+        }
     }
 }

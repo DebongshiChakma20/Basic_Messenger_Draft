@@ -8,6 +8,7 @@ public class Client
 {
     private TcpClient? client;
     private NetworkStream? stream;
+    private StreamReader? reader;
     private bool listening = false;
 
     public event Action<string>? MessageReceived;
@@ -21,11 +22,11 @@ public class Client
 
             client = new TcpClient();
 
-            client.Connect("127.0.0.1", 5000);
+            client.Connect(" 192.168.0.103", 5000);
 
             stream = client.GetStream();
-
-            MessageBox.Show("Connected to Messenger Server.");
+            reader=new StreamReader(stream,Encoding.UTF8);
+            
         }
         catch (Exception ex)
         {
@@ -42,7 +43,7 @@ public class Client
                 MessageBox.Show("Client is NOT connected.");
                 return;
             }
-
+            message += "\n";
             byte[] data = Encoding.UTF8.GetBytes(message);
 
             stream.Write(data, 0, data.Length);
@@ -60,18 +61,13 @@ public class Client
     {
         try
         {
-            if (stream == null)
+            if (reader == null)
                 return "";
 
-            byte[] buffer = new byte[1024];
+            string? message = reader.ReadLine();
 
-            int bytesRead = stream.Read(buffer, 0, buffer.Length);
-
-            if (bytesRead == 0)
+            if (message == null)
                 return "";
-
-            string message =
-                Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
             Console.WriteLine("Client received: " + message);
 

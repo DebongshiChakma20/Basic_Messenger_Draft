@@ -65,6 +65,8 @@ namespace MessengerDraft_1
             }
             string request = $"LOGIN:{userId}|{password}";
             client.Send(request);
+
+
         }
 
         private void clientMessageReceived(string text)
@@ -73,20 +75,17 @@ namespace MessengerDraft_1
             {
                 if (text == "LOGIN_SUCCESS")
                 {
-                    string userId = tbxUserId.Text.Trim();
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        string userId = tbxUserId.Text.Trim();
+                        client.MessageReceived -= clientMessageReceived; 
+                        MainForm mainForm = new MainForm(userId, client);
+                        mainForm.Show();
+                        this.Hide();
+                    }));
 
-                    MessageBox.Show(
-                        "Sign in successful! Welcome back, " + userId + "!",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
 
-                    client.MessageReceived -= clientMessageReceived;
-                    MainForm mainForm = new MainForm(userId, client);
 
-                    mainForm.Show();
-
-                    this.Hide();
                 }
                 else if (text == "LOGIN_FAILED")
                 {

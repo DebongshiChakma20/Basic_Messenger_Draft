@@ -1,11 +1,12 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
 UserRepository users = new UserRepository();
 MessageRepository messages = new MessageRepository();
 Dictionary<string, TcpClient> connectedUsers = new Dictionary<string, TcpClient>();
-
+ContactRepository contacts = new ContactRepository();
 
 
 TcpListener server = new TcpListener(IPAddress.Any, 5000);
@@ -29,20 +30,15 @@ while (true)
 void HandleClient(TcpClient client)
 {
     NetworkStream stream = client.GetStream();
+    StreamReader reader = new StreamReader(stream, Encoding.UTF8);
 
     try
     {
         while (client.Connected)
         {
-            byte[] buffer = new byte[1024];
-
-            int bytesRead = stream.Read(buffer, 0, buffer.Length);
-
-            if (bytesRead == 0)
-                break;
-
-            string message =
-                Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            string? message=reader.ReadLine();
+            if(message == null)
+            break;
 
             Console.WriteLine("Received: " + message);
 
@@ -56,7 +52,8 @@ void HandleClient(TcpClient client)
 
                 if (parts.Length != 3)
                 {
-                    byte[] reply = Encoding.UTF8.GetBytes("REGISTER_FAILED");
+                    byte[] reply = Encoding.UTF8.GetBytes("REGISTER_FAILED" +
+                        "n");
                     stream.Write(reply, 0, reply.Length);
                     continue;
                 }
@@ -67,7 +64,7 @@ void HandleClient(TcpClient client)
 
                 if (users.UserExists(userId))
                 {
-                    byte[] reply = Encoding.UTF8.GetBytes("REGISTER_EXISTS");
+                    byte[] reply = Encoding.UTF8.GetBytes("REGISTER_EXISTS\n");
                     stream.Write(reply, 0, reply.Length);
                     continue;
                 }
@@ -76,11 +73,10 @@ void HandleClient(TcpClient client)
                     users.RegisterUser(userId, username, password);
 
                 string response = registered
-                    ? "REGISTER_SUCCESS"
-                    : "REGISTER_FAILED";
+                    ? "REGISTER_SUCCESS\n"
+                    : "REGISTER_FAILED\n";
 
-                byte[] responseData =
-                    Encoding.UTF8.GetBytes(response);
+                byte[] responseData = Encoding.UTF8.GetBytes(response);
 
                 stream.Write(responseData, 0, responseData.Length);
 
@@ -97,7 +93,7 @@ void HandleClient(TcpClient client)
                 {
                     Console.WriteLine("Invalid LOGIN request: " + message);
 
-                    byte[] reply = Encoding.UTF8.GetBytes("LOGIN_FAILED");
+                    byte[] reply = Encoding.UTF8.GetBytes("LOGIN_FAILED\n");
                     stream.Write(reply, 0, reply.Length);
 
                     continue;
@@ -116,14 +112,14 @@ void HandleClient(TcpClient client)
 
                     connectedUsers[userId] = client;
 
-                    byte[] reply = Encoding.UTF8.GetBytes("LOGIN_SUCCESS");
+                    byte[] reply = Encoding.UTF8.GetBytes("LOGIN_SUCCESS\n");
                     stream.Write(reply, 0, reply.Length); ;
                 }
                 else
                 {
                     Console.WriteLine("Login failed!");
 
-                    byte[] reply = Encoding.UTF8.GetBytes("LOGIN_FAILED");
+                    byte[] reply = Encoding.UTF8.GetBytes("LOGIN_FAILED\n");
                     stream.Write(reply, 0, reply.Length);
                 }
 
@@ -144,8 +140,7 @@ void HandleClient(TcpClient client)
                 string receiverId = parts[1];
                 string messageText = parts[2];
 
-                Console.WriteLine(
-                    $"{senderId} -> {receiverId}: {messageText}");
+                Console.WriteLine($"{senderId} -> {receiverId}: {messageText}");
 
                 // Save message to SQL
                 bool saved = messages.SaveMessage(
@@ -169,7 +164,7 @@ void HandleClient(TcpClient client)
 
                     NetworkStream receiverStream =receiverClient.GetStream();
 
-                    string response =$"MESSAGE:{senderId}|{messageText}";
+                    string response =$"MESSAGE:{senderId}|{messageText}\n";
 
                     Console.WriteLine("Sending to receiver: " + response);
 
@@ -185,40 +180,116 @@ void HandleClient(TcpClient client)
                 continue;
             }
 
+            if (message.StartsWith("ADD_CONTACT:"))
+            {
+                string data = message.Substring("ADD_CONTACT:".Length);
+
+                string[] parts = data.Split('|', 2);
+
+                if(parts.Length != 2)
+                {
+                    byte[] reply = Encoding.UTF8.GetBytes("CONTACT_ADD_FAILED");
+                    stream.Write(reply, 0, reply.Length);
+                    continue;
+                }
+
+                string userId = parts[0];
+                string contactUserId = parts[1];
+
+                Console.WriteLine($"Adding contact: {userId} -> {contactUserId}");
+                if (contacts.ContactExists(userId, contactUserId)){
+                    byte[] reply = Encoding.UTF8.GetBytes("CONTACT_ALREADY_EXIST\n");
+                    stream.Write(reply, 0, reply.Length);
+                    continue;
+                }
+
+                contacts.AddContact(userId, contactUserId);
+                byte[] response = Encoding.UTF8.GetBytes("CONTACT_ADD_SUCCESSFUL\n");
+                stream.Write(response, 0, response.Length);
+
+                continue;
+            }
+
+            if (message.StartsWith("LOAD_MESSAGES:"))
+            {
+                string data = message.Substring("LOAD_MESSAGES:".Length);
+
+                string[] parts = data.Split('|', 2);
+
+                if (parts.Length != 2)
+                    continue;
+
+                string userId = parts[0];
+                string contactId = parts[1];
+
+                Console.WriteLine($"Loading messages: {userId} <-> {contactId}");
+
+                List<string[]> messageList =
+                    messages.getMessage(userId, contactId);
+
+                foreach (string[] msg in messageList)
+                {
+                    string response=$"OLD_MESSAGE:{msg[0]}|{msg[1]}|{msg[2]}\n";
+
+                    byte[] reply=Encoding.UTF8.GetBytes(response);
+
+                    stream.Write(reply, 0, reply.Length);
+                }
+
+                byte[] done=Encoding.UTF8.GetBytes("MESSAGES_LOADED\n");
+
+                stream.Write(done, 0, done.Length);
+
+                continue;
+            }
+
+            if (message.StartsWith("LOAD_CONTACTS:"))
+            {
+                string userId = message.Substring("LOAD_CONTACTS:".Length);
+
+                Console.WriteLine("Loading contacts for: " + userId);
+
+                List<string[]> contactList = contacts.getContacts(userId);
+
+                foreach (string[] contact in contactList)
+                {
+                    string response =
+                        $"CONTACT:{contact[0]}|{contact[1]}|Online\n";
+
+                    byte[] reply = Encoding.UTF8.GetBytes(response);
+
+                    stream.Write(reply, 0, reply.Length);
+                }
+
+                continue;
+            }
+
             // search
             if (message.StartsWith("SEARCH_USER:"))
             {
-                string userId =
-                    message.Substring("SEARCH_USER:".Length);
+                string userId = message.Substring("SEARCH_USER:".Length);
 
                 Console.WriteLine("Searching for: " + userId);
 
                 if (users.UserExists(userId))
                 {
-                    string response =
-                        $"USER_FOUND|{userId}|Unknown|Online";
+                    string[]? user = users.GetUser(userId);
 
-                    byte[] reply =
-                        Encoding.UTF8.GetBytes(response);
+                    if (user != null)
+                    {
+                        string response = $"USER_FOUND|{user[0]}|{user[1]}|Online\n";
 
-                    stream.Write(reply, 0, reply.Length);
+                        byte[] reply = Encoding.UTF8.GetBytes(response);
+
+                        stream.Write(reply, 0, reply.Length);
+                    }
+                    else
+                    {
+                        byte[] reply = Encoding.UTF8.GetBytes("USER_NOT_FOUND\n");
+
+                        stream.Write(reply, 0, reply.Length);
+                    }
                 }
-                else
-                {
-                    byte[] reply =
-                        Encoding.UTF8.GetBytes("USER_NOT_FOUND");
-
-                    stream.Write(reply, 0, reply.Length);
-                }
-            }
-
-            //other 
-            else
-            {
-                byte[] reply =
-                    Encoding.UTF8.GetBytes("Received");
-
-                stream.Write(reply, 0, reply.Length);
             }
         }
     }

@@ -25,4 +25,37 @@ public class MessageRepository
 
         return command.ExecuteNonQuery() > 0;
     }
+
+    public List<string[]> getMessage(string userId, string contactId)
+    {
+        List<string[]> message = new List<string[]>();
+        using SqlConnection connection = database.GetConnection();
+
+        connection.Open();
+
+        string sql = """
+            SELECT senderId,receiverId,messageText FROM Messages
+            WHERE (senderId=@userId AND receiverId=@contactId) OR
+                (senderId=@contactId AND receiverId=@userId)
+            ORDER BY messageId ASC
+            """;
+
+        using SqlCommand cmd= new SqlCommand(sql, connection);
+
+        cmd.Parameters.AddWithValue("@userId", userId);
+        cmd.Parameters.AddWithValue("@contactId", contactId);
+
+        using SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            message.Add(new string[]
+            {
+                reader["senderId"].ToString()!,
+                reader["receiverId"].ToString()!,
+                reader["messageText"].ToString()!
+            });
+        }
+        return message;
+    }
 }
