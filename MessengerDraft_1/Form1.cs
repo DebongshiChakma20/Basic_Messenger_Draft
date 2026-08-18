@@ -8,10 +8,10 @@ namespace MessengerDraft_1
     {
         private Client client;
 
-     
+
         private Contact currentContact;
 
-        public MainForm(string userId,Client client)
+        public MainForm(string userId, Client client)
         {
             InitializeComponent();
             this.client = client;
@@ -22,7 +22,7 @@ namespace MessengerDraft_1
         List<Panel> myContactListPanel = new List<Panel>();
         List<Contact> myContacts = new List<Contact>();
         List<Message> allMsg = new List<Message>();
-        
+
 
 
 
@@ -37,7 +37,7 @@ namespace MessengerDraft_1
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            addUserForm addForm = new addUserForm(this,client,lblUsersId.Text);
+            addUserForm addForm = new addUserForm(this, client, lblUsersId.Text);
 
 
             addForm.Show();
@@ -58,9 +58,10 @@ namespace MessengerDraft_1
             {
                 client.MessageReceived += clientMessageReceived;
                 client.StartListening();
-                client.Send($"LOAD_CONTACTS:{lblUsersId.Text}"); 
+                client.Send($"LOAD_CONTACTS:{lblUsersId.Text}");
             }
-            catch (Exception ex) { 
+            catch (Exception ex)
+            {
                 MessageBox.Show("Error connecting to server: " + ex.Message);
             }
         }
@@ -69,7 +70,7 @@ namespace MessengerDraft_1
         {
             this.Invoke(() =>
             {
-                Console.WriteLine("Mainfrom received"+text);
+                Console.WriteLine("Mainfrom received" + text);
 
                 if (text.StartsWith("CONTACT:"))
                 {
@@ -90,8 +91,9 @@ namespace MessengerDraft_1
 
                     return;
                 }
-                if (text.StartsWith("MESSAGE:")) {
-                    string data =text.Substring("MESSAGE:".Length);
+                if (text.StartsWith("MESSAGE:"))
+                {
+                    string data = text.Substring("MESSAGE:".Length);
 
                     string[] parts = data.Split('|', 2);
 
@@ -109,16 +111,17 @@ namespace MessengerDraft_1
 
                     if (currentContact != null && currentContact.id == message.senderId)
                     {
-                        messageOThersDisplay(message);  
+                        messageOThersDisplay(message);
                         scrollMessageBottom();
                     }
 
                     return;
                 }
 
-                if (text.StartsWith( "OLD_MESSAGE:")){
+                if (text.StartsWith("OLD_MESSAGE:"))
+                {
                     string data = text.Substring("OLD_MESSAGE:".Length);
-                    string[] parts=data.Split('|', 3);
+                    string[] parts = data.Split('|', 3);
 
                     if (parts.Length != 3) return;
 
@@ -135,20 +138,20 @@ namespace MessengerDraft_1
 
                 if (text == "MESSAGES_LOADED")
                 {
-                    if(currentContact != null)
+                    if (currentContact != null)
                     {
                         loadConversation(currentContact);
                     }
 
                     return;
                 }
-                
+
             });
         }
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-           
+
             if (currentContact == null)
             {
                 MessageBox.Show("Please select a contact.");
@@ -177,7 +180,7 @@ namespace MessengerDraft_1
 
         }
 
-      
+
 
         private void pbProfile_Click(object sender, EventArgs e)
         {
@@ -259,7 +262,7 @@ namespace MessengerDraft_1
 
             currentContact = (Contact)clicked_Panel.Tag;
 
-            string request =$"LOAD_MESSAGES:{lblUsersId.Text}|{currentContact.id}";
+            string request = $"LOAD_MESSAGES:{lblUsersId.Text}|{currentContact.id}";
 
             client.Send(request);
 
@@ -381,6 +384,16 @@ namespace MessengerDraft_1
             floMsg.ScrollControlIntoView(
                 floMsg.Controls[floMsg.Controls.Count - 1]
             );
+        }
+
+        private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            client.Disconnect();
+            logForm lf = new logForm();
+
+            lf.Show();
+
+            this.Hide();
         }
     }
 }

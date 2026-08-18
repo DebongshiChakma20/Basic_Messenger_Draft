@@ -22,7 +22,7 @@ public class Client
 
             client = new TcpClient();
 
-            client.Connect("192.168.0.103", 5000);
+            client.Connect("100.122.189.41", 5000);
 
             stream = client.GetStream();
             reader=new StreamReader(stream,Encoding.UTF8);
